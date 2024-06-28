@@ -47,7 +47,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 body {
   background-color: #e6f7ff; /* 연한 하늘색 배경 */
   display: flex;

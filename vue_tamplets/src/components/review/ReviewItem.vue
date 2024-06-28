@@ -1,12 +1,18 @@
 <template>
-  <div class="review-item">
-    <h4 class="review-title">{{ title }}</h4>
-    <p class="review-content">{{ content }}</p>
-    <router-link :to="link" class="btn btn-primary">자세히 보기</router-link>
+  <div>
+    <div class="review-item">
+      <h4 class="review-title">{{ title }}</h4>
+      <p class="review-content">
+        {{ content }}
+      </p>
+      <router-link :to="link" class="btn btn-primary">자세히 보기</router-link>
+    </div>
   </div>
 </template>
 
 <script>
+// import SearchBar from '../common/SearchBar.vue';
+
 export default {
   props: {
     title: String,
