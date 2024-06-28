@@ -1,13 +1,15 @@
 <template>
   <div>
-    <h2>추천 여행지</h2>
+    <router-link to="/destinationList">
+      <h2>추천 여행지</h2>
+    </router-link>
     <div class="card-deck">
       <div
         class="card"
         v-for="destination in destinations"
         :key="destination.title"
       >
-        <router-link to="/reviews">
+        <router-link to="/spot/info">
           <img :src="destination.imgSrc" class="card-img-top" alt="..." />
           <div class="card-body">
             <h5 class="card-title">{{ destination.title }}</h5>
