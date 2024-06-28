@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h2>리뷰글</h2>
+    <router-link to="/reviews">
+      <h2>리뷰글</h2>
+    </router-link>
     <div class="card mb-3" v-for="review in reviews" :key="review.title">
       <div class="card-body">
         <h5 class="card-title">{{ review.title }}</h5>
@@ -20,9 +22,9 @@ export default {
         { title: "리뷰 제목 2", text: "이곳에 리뷰글 2의 내용이 들어갑니다." },
         { title: "리뷰 제목 3", text: "이곳에 리뷰글 3의 내용이 들어갑니다." },
       ],
-    };
+    }
   },
-};
+}
 </script>
 
 <style>
