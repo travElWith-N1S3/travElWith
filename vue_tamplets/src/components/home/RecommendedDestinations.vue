@@ -7,11 +7,13 @@
         v-for="destination in destinations"
         :key="destination.title"
       >
-        <img :src="destination.imgSrc" class="card-img-top" alt="..." />
-        <div class="card-body">
-          <h5 class="card-title">{{ destination.title }}</h5>
-          <p class="card-text">{{ destination.text }}</p>
-        </div>
+        <router-link to="/reviews">
+          <img :src="destination.imgSrc" class="card-img-top" alt="..." />
+          <div class="card-body">
+            <h5 class="card-title">{{ destination.title }}</h5>
+            <p class="card-text">{{ destination.text }}</p>
+          </div>
+        </router-link>
       </div>
     </div>
   </div>
@@ -49,7 +51,10 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+a {
+  text-decoration: none;
+}
 .card {
   background-color: #ffffff; /* 카드 배경색 하얀색 */
   border: none;
