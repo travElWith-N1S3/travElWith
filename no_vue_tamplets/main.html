@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Travel Destination Recommendation</title>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-color: #e6f7ff; /* 연한 하늘색 배경 */
+        padding-top: 20px;
+      }
+      .site-name {
+        background-color: #0056b3; /* 사이트 이름 배경색 다크 블루 */
+        color: #ffffff; /* 사이트 이름 텍스트 색상 흰색 */
+        padding: 10px;
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+        width: 100%;
+      }
+      .container {
+        background-color: #ffffff; /* 메인 컨테이너 배경색 하얀색 */
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+      }
+      .search-bar {
+        margin-bottom: 30px;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background-color: #ffffff;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .popular-destinations {
+        margin-bottom: 30px;
+      }
+      .card {
+        background-color: #ffffff; /* 카드 배경색 하얀색 */
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .card-title,
+      .card-text {
+        color: #333333; /* 텍스트 색상 다크 그레이 */
+      }
+      h2 {
+        color: #0056b3; /* 제목 색상 다크 블루 */
+        margin-bottom: 20px;
+      }
+      .list-group-item {
+        background-color: #ffffff; /* 리스트 아이템 배경색 하얀색 */
+        border: none;
+        border-radius: 5px;
+        margin-bottom: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .background-image {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        opacity: 0.3; /* 이미지 투명도 */
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 사이트 이름 -->
+    <div class="site-name">Travel Destination Recommendation</div>
+
+    <!-- Background Image -->
+    <img
+      src="https://via.placeholder.com/1920x1080"
+      alt="Background Image"
+      class="background-image"
+    />
+
+    <div class="container">
+      <img
+        src="https://via.placeholder.com/1500x300"
+        class="img-fluid"
+        alt="Header Image"
+        style="width: 100%; height: 300px; object-fit: cover"
+      />
+      <!-- Image and Search Bar -->
+      <div class="row search-bar">
+        <div class="col-12">
+          <input
+            type="text"
+            class="form-control form-control-lg mt-3"
+            placeholder="검색할 여행지를 입력하세요..."
+          />
+        </div>
+      </div>
+
+      <!-- Popular Destinations -->
+      <div class="row popular-destinations">
+        <div class="col-12">
+          <h2>실시간 인기 여행지 순위</h2>
+          <ul class="list-group">
+            <li class="list-group-item">1. 제주도</li>
+            <li class="list-group-item">2. 서울</li>
+            <li class="list-group-item">3. 부산</li>
+            <li class="list-group-item">4. 경주</li>
+            <li class="list-group-item">5. 전주</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Recommended Destinations and Reviews -->
+      <div class="row">
+        <!-- Recommended Destinations -->
+        <div class="col-md-6">
+          <h2>추천 여행지</h2>
+          <div class="card-deck">
+            <div class="card">
+              <img
+                src="https://via.placeholder.com/150"
+                class="card-img-top"
+                alt="..."
+              />
+              <div class="card-body">
+                <h5 class="card-title">여행지 1</h5>
+                <p class="card-text">이곳에 여행지 1의 설명이 들어갑니다.</p>
+              </div>
+            </div>
+            <div class="card">
+              <img
+                src="https://via.placeholder.com/150"
+                class="card-img-top"
+                alt="..."
+              />
+              <div class="card-body">
+                <h5 class="card-title">여행지 2</h5>
+                <p class="card-text">이곳에 여행지 2의 설명이 들어갑니다.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-deck mt-3">
+            <div class="card">
+              <img
+                src="https://via.placeholder.com/150"
+                class="card-img-top"
+                alt="..."
+              />
+              <div class="card-body">
+                <h5 class="card-title">여행지 3</h5>
+                <p class="card-text">이곳에 여행지 3의 설명이 들어갑니다.</p>
+              </div>
+            </div>
+            <div class="card">
+              <img
+                src="https://via.placeholder.com/150"
+                class="card-img-top"
+                alt="..."
+              />
+              <div class="card-body">
+                <h5 class="card-title">여행지 4</h5>
+                <p class="card-text">이곳에 여행지 4의 설명이 들어갑니다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reviews -->
+        <div class="col-md-6">
+          <h2>리뷰글</h2>
+          <div class="card mb-3">
+            <div class="card-body">
+              <h5 class="card-title">리뷰 제목 1</h5>
+              <p class="card-text">이곳에 리뷰글 1의 내용이 들어갑니다.</p>
+            </div>
+          </div>
+          <div class="card mb-3">
+            <div class="card-body">
+              <h5 class="card-title">리뷰 제목 2</h5>
+              <p class="card-text">이곳에 리뷰글 2의 내용이 들어갑니다.</p>
+            </div>
+          </div>
+          <div class="card mb-3">
+            <div class="card-body">
+              <h5 class="card-title">리뷰 제목 3</h5>
+              <p class="card-text">이곳에 리뷰글 3의 내용이 들어갑니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>
