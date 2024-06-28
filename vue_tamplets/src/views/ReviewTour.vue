@@ -44,7 +44,7 @@
 <script>
 export default {
   name: "ReviewTour",
-};
+}
 </script>
 
 <style scoped>

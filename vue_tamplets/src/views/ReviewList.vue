@@ -1,6 +1,5 @@
 <template>
   <div>
-    <div class="site-name">Travel Destination Recommendation</div>
     <div class="container">
       <SearchBar />
 

@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h2>추천 여행지</h2>
+    <router-link to="/destinationList">
+      <h2>추천 여행지</h2>
+    </router-link>
     <div class="card-deck">
       <div
         class="card"
@@ -44,9 +46,9 @@ export default {
           text: "이곳에 여행지 4의 설명이 들어갑니다.",
         },
       ],
-    };
+    }
   },
-};
+}
 </script>
 
 <style>
