@@ -7,7 +7,8 @@
       consectetur, libero necessitatibus sit recusandae! Tempore, alias quas.
     </p>
     <div class="review-actions">
-      <a href="/review1" class="btn btn-primary">자세히 보기</a>
+      <router-link to="/review" class="btn btn-primary">자세히보기</router-link>
+      <!-- <a href="/review1" class="btn btn-primary">자세히 보기</a> -->
     </div>
   </div>
 </template>

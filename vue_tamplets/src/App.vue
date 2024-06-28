@@ -12,16 +12,19 @@
   <div>
     <Header2 />
     <router-view />
+    <SideBar />
   </div>
 </template>
 
 <script>
 import Header2 from "./components/common/VHeader.vue";
+import SideBar from "./components/common/SideBar.vue";
 
 export default {
   name: "App",
   components: {
     Header2,
+    SideBar,
   },
 };
 </script>

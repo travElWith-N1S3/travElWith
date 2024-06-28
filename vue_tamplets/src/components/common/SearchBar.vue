@@ -10,12 +10,12 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 .search-bar {
   margin-bottom: 30px;
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 10;
   background-color: #ffffff;
   padding-top: 20px;
   padding-bottom: 20px;
