@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <!-- <div class="container">
     <Header2 />
     <img alt="Vue logo" src="./assets/logo.png" />
     <SearchBar />
@@ -8,25 +8,20 @@
       <RecommendedDestinations class="col-md-6" />
       <TourReviews class="col-md-6" />
     </div>
+  </div> -->
+  <div>
+    <Header2 />
+    <router-view />
   </div>
-  <router-view />
 </template>
 
 <script>
 import Header2 from "./components/common/VHeader.vue";
-import SearchBar from "./components/common/SearchBar.vue";
-import PopularDestinations from "./components/home/PopularDestinations.vue";
-import RecommendedDestinations from "./components/home/RecommendedDestinations.vue";
-import TourReviews from "./components/home/TourReviews.vue";
 
 export default {
   name: "App",
   components: {
     Header2,
-    SearchBar,
-    PopularDestinations,
-    RecommendedDestinations,
-    TourReviews,
   },
 };
 </script>
