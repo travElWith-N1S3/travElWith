@@ -6,10 +6,6 @@
       <router-link to="/reviews" @click="toggleSidebar">리뷰</router-link>
       <router-link to="/chatbot" @click="toggleSidebar">챗봇</router-link>
     </div>
-    <div class="overlay" v-if="isSidebarOpen" @click="toggleSidebar"></div>
-    <div class="content">
-      <!-- 여기에 메인 컨텐츠를 추가하세요 -->
-    </div>
   </div>
 </template>
 
