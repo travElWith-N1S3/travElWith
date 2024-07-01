@@ -1,25 +1,34 @@
 <template>
   <div class="col-md-6">
     <div class="card">
-      <img :src="destination.image" class="card-img-top" :alt="destination.title" />
-      <div class="card-body">
-        <h5 class="card-title">{{ destination.title }}</h5>
-        <p class="card-text">{{ destination.description }}</p>
-      </div>
+      <img
+        :src="destination.image"
+        class="card-img-top"
+        :alt="destination.title"
+      />
+      <router-link to="spot/info">
+        <div class="card-body">
+          <h5 class="card-title">{{ destination.title }}</h5>
+          <p class="card-text">{{ destination.description }}</p>
+        </div>
+      </router-link>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'DestinationCard',
+  name: "DestinationCard",
   props: {
-    destination: Object
-  }
-};
+    destination: Object,
+  },
+}
 </script>
 
 <style scoped>
+a {
+  text-decoration: none;
+}
 .card {
   margin-bottom: 20px;
   border: none;
