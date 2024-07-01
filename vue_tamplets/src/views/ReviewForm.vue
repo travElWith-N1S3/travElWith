@@ -13,7 +13,15 @@
           />
         </div>
         <div class="form-group">
-          <ckeditor class="review-ckeditor" :editor="editor" v-model="reviewContent" :config="editorConfig"></ckeditor>
+          <ckeditor
+            class="review-ckeditor"
+            :editor="editor"
+            v-model="reviewContent"
+            :config="editorConfig"
+          ></ckeditor>
+        </div>
+        <div class="form-group">
+          <star-rating v-model="rating"></star-rating>
         </div>
         <button type="submit" class="btn btn-submit">리뷰 작성 완료</button>
       </form>
@@ -25,19 +33,22 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import CKEditor from "@ckeditor/ckeditor5-vue";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import StarRating from "../components/review/StarRating.vue"; // 별점 컴포넌트를 가져옵니다
 
 export default {
   components: {
     ckeditor: CKEditor.component,
+    StarRating,
   },
   data() {
     return {
       reviewTitle: "",
       reviewContent: "",
+      rating: 0,
       editor: ClassicEditor,
       editorConfig: {
-        placeholder: '리뷰 내용을 입력해주세요',
-        height: '400px',
+        placeholder: "리뷰 내용을 입력해주세요",
+        height: "400px",
       },
     };
   },
@@ -45,6 +56,7 @@ export default {
     submitReview() {
       console.log("리뷰 제목:", this.reviewTitle);
       console.log("리뷰 내용:", this.reviewContent);
+      console.log("별점:", this.rating);
     },
   },
 };
