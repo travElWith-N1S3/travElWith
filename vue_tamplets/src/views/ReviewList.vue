@@ -10,17 +10,18 @@
             type="text"
             class="form-control"
             placeholder="여행지나 리뷰를 검색하세요..."
+            v-model="searchQuery"
           />
           <div class="input-group-append">
-            <button class="btn btn-outline-primary" type="button">검색</button>
+            <button class="btn btn-outline-primary" type="button" @click="searchReviews">검색</button>
           </div>
         </div>
         <ReviewItem
-          v-for="review in reviews"
-          :key="review.id"
-          :title="review.title"
-          :content="review.content"
-          :link="review.link"
+          v-for="review in filteredReviews"
+          :key="review.tw_review_no"
+          :title="review.tw_review_title"
+          :content="review.tw_review_content"
+          :link="`/review/${review.tw_review_no}`"
         />
       </div>
 
@@ -29,9 +30,7 @@
         <nav aria-label="Page navigation example">
           <ul class="pagination justify-content-center mb-0">
             <li class="page-item disabled">
-              <a class="page-link" href="#" tabindex="-1" aria-disabled="true"
-                >이전</a
-              >
+              <a class="page-link" href="#" tabindex="-1" aria-disabled="true">이전</a>
             </li>
             <li class="page-item active">
               <a class="page-link" href="#">1</a>
@@ -52,6 +51,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import ReviewItem from "../components/review/ReviewItem.vue"
 
 export default {
@@ -60,25 +60,39 @@ export default {
   },
   data() {
     return {
-      reviews: [
-        {
-          id: 1,
-          title: "리뷰 제목 1",
-          content:
-            "이곳에 리뷰 내용이 요약되어 나타납니다. Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque officiis ad dignissimos consectetur, libero necessitatibus sit recusandae! Tempore, alias quas.",
-          link: "/review1",
-        },
-        {
-          id: 2,
-          title: "리뷰 제목 2",
-          content:
-            "이곳에 리뷰 내용이 요약되어 나타납니다. Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque officiis ad dignissimos consectetur, libero necessitatibus sit recusandae! Tempore, alias quas.",
-          link: "/review2",
-        },
-        // 추가적인 리뷰 아이템들을 여기에 추가
-      ],
+      reviews: [],
+      searchQuery: ''
     }
   },
+  computed: {
+    filteredReviews() {
+      return this.reviews.filter(review => {
+        return review.tw_review_title.includes(this.searchQuery) || review.tw_review_content.includes(this.searchQuery);
+      });
+    }
+  },
+  methods: {
+    fetchReviews() {
+      axios.post('/api1/reviewList')
+        .then(response => {
+          if (response.data.status) {
+            this.reviews = response.data.list;
+          } else {
+            console.error("Error fetching reviews:", response.data.error);
+          }
+        })
+        .catch(error => {
+          console.error("There was an error fetching the reviews!", error);
+        });
+    },
+    searchReviews() {
+      // This method is called when the search button is clicked.
+      // The search functionality is already handled by the computed property `filteredReviews`.
+    }
+  },
+  created() {
+    this.fetchReviews();
+  }
 }
 </script>
 

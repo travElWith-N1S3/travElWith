@@ -1,14 +1,9 @@
 <template>
   <div class="review-item">
-    <h4 class="review-title">리뷰 제목 1</h4>
-    <p class="review-content">
-      이곳에 리뷰 내용이 요약되어 나타납니다. Lorem ipsum dolor sit amet
-      consectetur adipisicing elit. Doloremque officiis ad dignissimos
-      consectetur, libero necessitatibus sit recusandae! Tempore, alias quas.
-    </p>
+    <h4 class="review-title">{{ title }}</h4>
+    <p class="review-content">{{ content }}</p>
     <div class="review-actions">
-      <router-link to="/review" class="btn btn-primary">자세히보기</router-link>
-      <!-- <a href="/review1" class="btn btn-primary">자세히 보기</a> -->
+      <router-link :to="link" class="btn btn-primary">자세히보기</router-link>
     </div>
   </div>
 </template>
@@ -16,7 +11,12 @@
 <script>
 export default {
   name: "ReviewItem",
-};
+  props: {
+    title: String,
+    content: String,
+    link: String
+  }
+}
 </script>
 
 <style scoped>
@@ -54,7 +54,6 @@ export default {
   justify-content: flex-start;
   align-items: flex-end;
   padding-top: 10px;
-  /* position: absolute; */
   bottom: 20px;
 }
 </style>
