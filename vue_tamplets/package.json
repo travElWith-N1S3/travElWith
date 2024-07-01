@@ -1,5 +1,5 @@
 {
-  "name": "test1",
+  "name": "travElWith",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,6 +10,9 @@
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^41.4.2",
     "@ckeditor/ckeditor5-vue": "^5.1.0",
+    "@ckeditor/ckeditor5-image": "^27.0.0",
+    "@ckeditor/ckeditor5-essentials": "^27.0.0",
+    "@ckeditor/ckeditor5-utils": "^27.0.0",
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",
     "core-js": "^3.8.3",

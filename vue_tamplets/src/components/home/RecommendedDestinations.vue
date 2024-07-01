@@ -68,7 +68,6 @@ a {
   color: #333333; /* 텍스트 색상 다크 그레이 */
 }
 h2 {
-  color: #0056b3; /* 제목 색상 다크 블루 */
   margin-bottom: 20px;
 }
 </style>

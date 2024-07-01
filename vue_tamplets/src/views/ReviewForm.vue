@@ -36,7 +36,7 @@ export default {
       reviewContent: "",
       editor: ClassicEditor,
       editorConfig: {
-        placeholder: '게시물 내용을 입력해주세요',
+        placeholder: '리뷰 내용을 입력해주세요',
         height: '400px',
       },
     };
