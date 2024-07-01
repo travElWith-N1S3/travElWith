@@ -3,7 +3,7 @@
     <h4 class="review-title">{{ title }}</h4>
     <p class="review-content">{{ content }}</p>
     <div class="review-actions">
-      <router-link :to="link" class="btn btn-primary">자세히보기</router-link>
+      <router-link to="/review" class="btn btn-primary">자세히보기</router-link>
     </div>
   </div>
 </template>
