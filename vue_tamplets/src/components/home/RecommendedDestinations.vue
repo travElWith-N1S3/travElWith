@@ -1,17 +1,21 @@
 <template>
   <div>
-    <h2>추천 여행지</h2>
+    <router-link to="/destinationList">
+      <h2>추천 여행지</h2>
+    </router-link>
     <div class="card-deck">
       <div
         class="card"
         v-for="destination in destinations"
         :key="destination.title"
       >
-        <img :src="destination.imgSrc" class="card-img-top" alt="..." />
-        <div class="card-body">
-          <h5 class="card-title">{{ destination.title }}</h5>
-          <p class="card-text">{{ destination.text }}</p>
-        </div>
+        <router-link to="/spot">
+          <img :src="destination.imgSrc" class="card-img-top" alt="..." />
+          <div class="card-body">
+            <h5 class="card-title">{{ destination.title }}</h5>
+            <p class="card-text">{{ destination.text }}</p>
+          </div>
+        </router-link>
       </div>
     </div>
   </div>
@@ -49,7 +53,10 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+a {
+  text-decoration: none;
+}
 .card {
   background-color: #ffffff; /* 카드 배경색 하얀색 */
   border: none;
@@ -61,7 +68,6 @@ export default {
   color: #333333; /* 텍스트 색상 다크 그레이 */
 }
 h2 {
-  color: #0056b3; /* 제목 색상 다크 블루 */
   margin-bottom: 20px;
 }
 </style>

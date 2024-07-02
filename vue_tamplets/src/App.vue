@@ -1,27 +1,20 @@
 <template>
-  <!-- <div class="container">
-    <Header2 />
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <SearchBar />
-    <PopularDestinations />
-    <div class="row">
-      <RecommendedDestinations class="col-md-6" />
-      <TourReviews class="col-md-6" />
-    </div>
-  </div> -->
   <div>
     <Header2 />
     <router-view />
+    <SideBar />
   </div>
 </template>
 
 <script>
 import Header2 from "./components/common/VHeader.vue";
+import SideBar from "./components/common/SideBar.vue";
 
 export default {
   name: "App",
   components: {
     Header2,
+    SideBar,
   },
 };
 </script>

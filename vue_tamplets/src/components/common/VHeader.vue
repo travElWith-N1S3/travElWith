@@ -1,5 +1,7 @@
 <template>
-  <div class="site-name">Travel Destination Recommendation</div>
+  <router-link to="/">
+    <div class="site-name">Travel Destination Recommendation</div>
+  </router-link>
 </template>
 
 <style>

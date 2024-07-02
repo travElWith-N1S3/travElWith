@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <div class="review-header">
-      <router-link to="/" class="btn btn-secondary mb-3">
-        메인으로 돌아가기
+      <router-link to="/reviews" class="btn btn-secondary mb-3">
+        리스트 돌아가기
       </router-link>
       <h1 class="review-title">리뷰1 - 여행지 1에 대한 리뷰</h1>
       <div>
@@ -44,7 +44,7 @@
 <script>
 export default {
   name: "ReviewTour",
-};
+}
 </script>
 
 <style scoped>

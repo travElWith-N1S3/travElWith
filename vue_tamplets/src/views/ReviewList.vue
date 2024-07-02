@@ -1,11 +1,20 @@
 <template>
   <div>
-    <div class="site-name">Travel Destination Recommendation</div>
     <div class="container">
       <SearchBar />
 
       <!-- 리뷰 목록 -->
       <div class="review-list">
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="여행지나 리뷰를 검색하세요..."
+          />
+          <div class="input-group-append">
+            <button class="btn btn-outline-primary" type="button">검색</button>
+          </div>
+        </div>
         <ReviewItem
           v-for="review in reviews"
           :key="review.id"
@@ -15,28 +24,35 @@
         />
       </div>
 
-      <!-- 페이징 -->
-      <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-          <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1" aria-disabled="true"
-              >이전</a
-            >
-          </li>
-          <li class="page-item active"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#">다음</a>
-          </li>
-        </ul>
-      </nav>
+      <!-- 페이징 및 리뷰 등록 버튼 -->
+      <div class="d-flex justify-content-between align-items-center">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center mb-0">
+            <li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1" aria-disabled="true"
+                >이전</a
+              >
+            </li>
+            <li class="page-item active">
+              <a class="page-link" href="#">1</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+              <a class="page-link" href="#">다음</a>
+            </li>
+          </ul>
+        </nav>
+        <router-link to="/reviewForm">
+          <button class="btn btn-primary ml-3">리뷰 등록</button>
+        </router-link>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import ReviewItem from "../components/review/ReviewItem.vue";
+import ReviewItem from "../components/review/ReviewItem.vue"
 
 export default {
   components: {
@@ -61,9 +77,9 @@ export default {
         },
         // 추가적인 리뷰 아이템들을 여기에 추가
       ],
-    };
+    }
   },
-};
+}
 </script>
 
 <style scoped>
