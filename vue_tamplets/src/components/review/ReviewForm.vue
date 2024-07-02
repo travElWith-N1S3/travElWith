@@ -7,33 +7,35 @@
           <input
             type="text"
             class="form-control"
-            id="reviewTitle"
-            v-model="reviewTitle"
+            id="tw_review_title"
+            v-model="contentData.tw_review_title"
             placeholder="리뷰 제목을 입력하세요..."
           />
         </div>
         <div class="form-group">
-          <textarea name="" id="editor" cols="30" rows="10"></textarea>
-          <!-- <ckeditor
-            class="review-ckeditor"
-            :editor="editor"
-            v-model="reviewContent"
-            :config="editorConfig"
-          ></ckeditor> -->
+          <textarea
+            v-model="contentData.tw_review_content"
+            name="tw_review_content"
+            id="editor"
+            cols="30"
+            rows="10"
+            @input="updateContentData"
+          ></textarea>
         </div>
         <div class="form-group">
-          <star-rating v-model="rating"></star-rating>
+          <star-rating v-model="contentData.tw_review_rating"></star-rating>
         </div>
-        <button type="submit" class="btn btn-submit">리뷰 작성 완료</button>
+        <button type="submit" class="btn btn-submit">등록</button>
       </form>
     </div>
   </div>
 </template>
 
 <script>
-import "bootstrap/dist/css/bootstrap.min.css";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import StarRating from "../review/StarRating.vue";
+import "bootstrap/dist/css/bootstrap.min.css"
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic"
+import StarRating from "../review/StarRating.vue"
+import axios from "axios"
 
 export default {
   components: {
@@ -41,19 +43,39 @@ export default {
   },
   data() {
     return {
-      reviewTitle: "",
-      reviewContent: "",
-      rating: 0,
-    };
+      contentData: {
+        tw_review_title: "",
+        tw_review_content: "",
+        tw_review_rating: 0,
+      },
+    }
   },
   methods: {
     submitReview() {
-      console.log("리뷰 제목:", this.reviewTitle);
-      console.log("리뷰 내용:", this.reviewContent);
-      console.log("별점:", this.rating);
+      console.log("리뷰 제목:", this.contentData.tw_review_title)
+      console.log("리뷰 내용:", this.contentData.tw_review_content)
+      console.log("별점:", this.contentData.tw_review_rating)
+
+      axios
+        .post("/api1/reviewInsert", this.contentData)
+        .then((response) => {
+          console.log(response.data)
+          if (response.data === "성공") {
+            alert("리뷰가 성공적으로 등록되었습니다.")
+            this.$router.push("/reviews")
+          } else {
+            alert("리뷰 등록에 실패했습니다.")
+          }
+        })
+        .catch((error) => {
+          console.error("There was an error!", error)
+        })
+    },
+    updateContentData(event) {
+      this.contentData.tw_review_content = event.target.value
     },
   },
-  mounted: function () {
+  mounted() {
     ClassicEditor.create(document.querySelector("#editor"), {
       language: "ko",
       ckfinder: {
@@ -66,21 +88,27 @@ export default {
           "X-CSRF-TOKEN": "CSRF-Token",
         },
       },
-    }).catch((error) => {
-      console.error(error);
-    });
+    })
+      .then((editor) => {
+        editor.model.document.on("change:data", () => {
+          this.contentData.tw_review_content = editor.getData()
+        })
+      })
+      .catch((error) => {
+        console.error(error)
+      })
   },
-};
+}
 </script>
 
 <style scoped>
 body {
-  background-color: #e6f7ff; /* 연한 하늘색 배경 */
+  background-color: #e6f7ff;
   padding-top: 20px;
 }
 .site-name {
-  background-color: #0056b3; /* 사이트 이름 배경색 다크 블루 */
-  color: #ffffff; /* 사이트 이름 텍스트 색상 흰색 */
+  background-color: #0056b3;
+  color: #ffffff;
   padding: 10px;
   font-size: 24px;
   font-weight: bold;
@@ -88,18 +116,18 @@ body {
   width: 100%;
 }
 .container {
-  background-color: #ffffff; /* 메인 컨테이너 배경색 하얀색 */
+  background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  margin-top: 20px; /* 사이트 이름과 겹치지 않게 여백 추가 */
+  margin-top: 20px;
 }
 .form-group {
   margin-bottom: 20px;
 }
 .btn-submit {
-  background-color: #0056b3; /* 버튼 배경색 다크 블루 */
-  color: #ffffff; /* 버튼 텍스트 색상 흰색 */
+  background-color: #0056b3;
+  color: #ffffff;
   border: none;
 }
 </style>

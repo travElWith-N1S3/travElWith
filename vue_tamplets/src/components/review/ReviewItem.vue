@@ -1,7 +1,7 @@
 <template>
   <div class="review-item">
     <h4 class="review-title">{{ title }}</h4>
-    <p class="review-content">{{ content }}</p>
+    <div class="review-content" v-html="content"></div>
     <div class="review-actions">
       <router-link :to="{ name: 'ReviewTour', params: { tw_review_no: tw_review_no }}" class="btn btn-primary">자세히보기</router-link>
     </div>
