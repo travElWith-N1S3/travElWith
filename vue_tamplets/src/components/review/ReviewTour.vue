@@ -4,9 +4,6 @@
       <router-link to="/reviews" class="btn btn-secondary">
         리스트 돌아가기
       </router-link>
-      <div class="star-rating">
-        <star-rating :modelValue="review.tw_review_rating" />
-      </div>
       <h1 class="review-title">{{ review.tw_review_title }}</h1>
       <div>
         <a href="#" class="btn btn-edit">수정</a>
@@ -18,6 +15,9 @@
         <div class="card-body">
           <h5 class="card-title">리뷰 내용</h5>
           <p class="card-text" v-html="review.tw_review_content"></p>
+          <div class="star-rating">
+            <star-rating :modelValue="review.tw_review_rating" />
+          </div>
         </div>
       </div>
     </div>
@@ -104,7 +104,6 @@ body {
 .review-title {
   color: #0056b3;
   margin-top: 10px;
-  margin-left: -100px;
 }
 .review-content {
   background-color: #ffffff;
@@ -135,7 +134,6 @@ body {
 }
 
 .star-rating {
-  margin-left: -170px;
-  margin-right: -150px;
+  margin-top: -20px;
 }
 </style>

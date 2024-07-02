@@ -9,7 +9,7 @@
         v-for="destination in destinations"
         :key="destination.title"
       >
-        <router-link to="/spot/info">
+        <router-link to="/spot">
           <img :src="destination.imgSrc" class="card-img-top" alt="..." />
           <div class="card-body">
             <h5 class="card-title">{{ destination.title }}</h5>
