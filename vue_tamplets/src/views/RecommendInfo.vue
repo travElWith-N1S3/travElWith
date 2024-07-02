@@ -68,11 +68,7 @@ export default {
   name: "App",
   data() {
     return {
-      spot: {
-        // id: "",
-        // title: "",
-        // content: "",
-      },
+      spot: {},
     };
   },
   methods: {

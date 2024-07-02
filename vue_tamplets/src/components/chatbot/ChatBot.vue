@@ -55,16 +55,19 @@ export default {
   },
   methods: {
     sendMessage() {
+      this.$axios
+        .get("http://localhost:8080/v1/chatbot?prompt=" + this.userMessage)
+        .then((response) => {
+          this.chatHistory.push({
+            type: "bot",
+            text: response.data,
+          });
+        });
+
       if (this.userMessage.trim() === "") return;
 
       // 사용자 메시지 추가
       this.chatHistory.push({ type: "user", text: this.userMessage });
-
-      // 챗봇 응답 추가 (임시 예시)
-      this.chatHistory.push({
-        type: "bot",
-        text: "추천할 수 있는 여행지를 찾고 있어요.",
-      });
 
       // 메시지 전송 후 입력창 초기화
       this.userMessage = "";
@@ -74,6 +77,7 @@ export default {
         this.scrollToBottom();
       });
     },
+
     scrollToBottom() {
       const chatBody = this.$refs.chatBody;
       chatBody.scrollTop = chatBody.scrollHeight;
