@@ -77,7 +77,7 @@ export default {
   },
   methods: {
     init() {
-      this.$axios.get("http://localhost:8080/v1/test").then((response) => {
+      this.$axios.get("http://localhost:8080/v1/spot").then((response) => {
         console.log(response.data[0]);
         this.spot = response.data[0];
       });

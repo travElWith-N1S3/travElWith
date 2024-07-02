@@ -5,6 +5,7 @@ import ReviewList from "../views/ReviewList.vue";
 import RecommendInfo from "../views/RecommendInfo.vue";
 import DestinationList from "../views/DestinationList.vue";
 import ReviewForm from "../views/ReviewForm.vue";
+import ChatBot from "../views/ChatBotMain.vue";
 
 const routes = [
   {
@@ -33,9 +34,14 @@ const routes = [
     component: ReviewForm,
   },
   {
-    path: "/spot/info",
+    path: "/spot",
     name: "RecommendInfo",
     component: RecommendInfo,
+  },
+  {
+    path: "/chatbot",
+    name: "ChatBot",
+    component: ChatBot,
   },
 ];
 
