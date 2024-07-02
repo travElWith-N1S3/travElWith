@@ -58,13 +58,7 @@ export default {
       language: "ko",
       ckfinder: {
         uploadUrl: "https://example.com/upload",
-      },
-      simpleUpload: {
-        uploadUrl: "https://example.com/upload",
         withCredentials: true,
-        headers: {
-          "X-CSRF-TOKEN": "CSRF-Token",
-        },
       },
     }).catch((error) => {
       console.error(error);

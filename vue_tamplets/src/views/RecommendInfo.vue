@@ -2,7 +2,7 @@
   <div id="app">
     <div class="container">
       <!-- 여행지 이름 -->
-      <h1 class="destination-name">{{ data[0].title }}</h1>
+      <h1 class="destination-name">{{ spot.title }}</h1>
 
       <!-- 여행지 사진 캐러셀 -->
       <div
@@ -12,7 +12,7 @@
       >
         <ol class="carousel-indicators">
           <li
-            v-for="(image, index) in data[0].images"
+            v-for="(image, index) in spot.images"
             :key="index"
             :data-target="'#carouselExampleIndicators'"
             :data-slide-to="index"
@@ -22,7 +22,7 @@
         <div class="carousel-inner">
           <div
             class="carousel-item"
-            v-for="(image, index) in data[0].images"
+            v-for="(image, index) in spot.images"
             :key="index"
             :class="{ active: index === 0 }"
           >
@@ -56,7 +56,7 @@
       <!-- 여행지 홍보 문구 -->
       <div class="promo-text">
         <p>
-          {{ data[0].contents }}
+          {{ spot.contents }}
         </p>
       </div>
     </div>
@@ -68,18 +68,23 @@ export default {
   name: "App",
   data() {
     return {
-      data: [
-        {
-          id: 1,
-          title: "아름다운 제주",
-          images: [
-            "https://via.placeholder.com/800x400?text=Jeju%20Island%201",
-            "https://via.placeholder.com/800x400?text=Jeju%20Island%202",
-          ],
-          contents: "소개 내용이 들어오면 됩니다.",
-        },
-      ],
+      spot: {
+        // id: "",
+        // title: "",
+        // content: "",
+      },
     };
+  },
+  methods: {
+    init() {
+      this.$axios.get("http://localhost:8080/v1/test").then((response) => {
+        console.log(response.data[0]);
+        this.spot = response.data[0];
+      });
+    },
+  },
+  mounted() {
+    this.init();
   },
 };
 </script>
