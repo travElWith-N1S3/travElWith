@@ -33,7 +33,7 @@
 <script>
 import "bootstrap/dist/css/bootstrap.min.css";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import StarRating from "../components/review/StarRating.vue"; // 별점 컴포넌트를 가져옵니다
+import StarRating from "../review/StarRating.vue";
 
 export default {
   components: {

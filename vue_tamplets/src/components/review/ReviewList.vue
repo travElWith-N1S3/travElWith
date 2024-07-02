@@ -53,7 +53,7 @@
 
 <script>
 import axios from 'axios'
-import ReviewItem from "../components/review/ReviewItem.vue"
+import ReviewItem from "./ReviewItem.vue"
 
 export default {
   components: {

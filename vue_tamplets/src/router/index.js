@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
 import MainHome from "../views/MainHome.vue";
-import ReviewTour from "../views/ReviewTour.vue";
-import ReviewList from "../views/ReviewList.vue";
+import ReviewTour from "../components/review/ReviewTour.vue";
+import ReviewList from "../components/review/ReviewList.vue";
 import RecommendInfo from "../views/RecommendInfo.vue";
 import DestinationList from "../views/DestinationList.vue";
-import ReviewForm from "../views/ReviewForm.vue";
+import ReviewForm from "../components/review/ReviewForm.vue";
 
 const routes = [
   {
