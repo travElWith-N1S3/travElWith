@@ -21,6 +21,7 @@
           :key="review.tw_review_no"
           :title="review.tw_review_title"
           :content="review.tw_review_content"
+          :tw_review_no="review.tw_review_no"
           :link="`/review/${review.tw_review_no}`"
         />
       </div>
@@ -85,10 +86,6 @@ export default {
           console.error("There was an error fetching the reviews!", error);
         });
     },
-    searchReviews() {
-      // This method is called when the search button is clicked.
-      // The search functionality is already handled by the computed property `filteredReviews`.
-    }
   },
   created() {
     this.fetchReviews();
@@ -98,15 +95,15 @@ export default {
 
 <style scoped>
 .site-name {
-  background-color: #0056b3; /* 사이트 이름 배경색 다크 블루 */
-  color: #ffffff; /* 사이트 이름 텍스트 색상 흰색 */
+  background-color: #0056b3;
+  color: #ffffff;
   padding: 10px;
   font-size: 24px;
   font-weight: bold;
   text-align: center;
 }
 .container {
-  background-color: #ffffff; /* 메인 컨테이너 배경색 하얀색 */
+  background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;

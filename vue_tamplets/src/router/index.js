@@ -13,9 +13,10 @@ const routes = [
     component: MainHome,
   },
   {
-    path: "/review",
-    name: "Review",
+    path: '/review/:tw_review_no',
+    name: 'ReviewTour',
     component: ReviewTour,
+    props: true
   },
   {
     path: "/reviews",

@@ -3,7 +3,7 @@
     <h4 class="review-title">{{ title }}</h4>
     <p class="review-content">{{ content }}</p>
     <div class="review-actions">
-      <router-link to="/review" class="btn btn-primary">자세히보기</router-link>
+      <router-link :to="{ name: 'ReviewTour', params: { tw_review_no: tw_review_no }}" class="btn btn-primary">자세히보기</router-link>
     </div>
   </div>
 </template>
@@ -14,14 +14,14 @@ export default {
   props: {
     title: String,
     content: String,
-    link: String
+    tw_review_no: String
   }
 }
 </script>
 
 <style scoped>
 .review-item {
-  background-color: #f9f9f9; /* 리뷰 아이템 배경색 */
+  background-color: #f9f9f9;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
@@ -35,12 +35,11 @@ export default {
 }
 
 .review-title {
-  color: #0056b3; /* 제목 색상 다크 블루 */
-  margin-bottom: 5px;
+  color: #0056b3;
 }
 
 .review-content {
-  color: #333333; /* 내용 색상 다크 그레이 */
+  color: #333333;
   flex-grow: 1;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -53,7 +52,5 @@ export default {
   display: flex;
   justify-content: flex-start;
   align-items: flex-end;
-  padding-top: 10px;
-  bottom: 20px;
 }
 </style>
