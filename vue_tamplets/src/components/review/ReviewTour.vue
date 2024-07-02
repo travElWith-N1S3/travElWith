@@ -1,9 +1,12 @@
 <template>
   <div class="container">
     <div class="review-header">
-      <router-link to="/reviews" class="btn btn-secondary mb-3">
+      <router-link to="/reviews" class="btn btn-secondary">
         리스트 돌아가기
       </router-link>
+      <div class="star-rating">
+        <star-rating :modelValue="review.tw_review_rating" />
+      </div>
       <h1 class="review-title">{{ review.tw_review_title }}</h1>
       <div>
         <a href="#" class="btn btn-edit">수정</a>
@@ -23,9 +26,13 @@
 
 <script>
 import axios from "axios"
+import StarRating from "../review/StarRating.vue"
 
 export default {
   name: "ReviewTour",
+  components: {
+    StarRating,
+  },
   data() {
     return {
       review: {},
@@ -96,14 +103,14 @@ body {
 }
 .review-title {
   color: #0056b3;
-  margin-bottom: 20px;
+  margin-top: 10px;
+  margin-left: -100px;
 }
 .review-content {
   background-color: #ffffff;
   border: none;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
 }
 .btn-edit,
 .btn-delete {
@@ -125,5 +132,10 @@ body {
 .btn-edit:hover,
 .btn-delete:hover {
   opacity: 0.8;
+}
+
+.star-rating {
+  margin-left: -170px;
+  margin-right: -150px;
 }
 </style>
