@@ -40,6 +40,9 @@
         </form>
       </div>
     </div>
+    <form action="http://localhost:8080/test">
+      <button>test</button>
+    </form>
   </div>
 </template>
 
@@ -60,10 +63,12 @@ export default {
           "http://localhost:8080/v1/chatbot/chatting?prompt=" + this.userMessage
         )
         .then((response) => {
-          this.chatHistory.push({
-            type: "bot",
-            text: response.data,
-          });
+          if (response.data != "") {
+            this.chatHistory.push({
+              type: "bot",
+              text: response.data,
+            });
+          }
         });
 
       if (this.userMessage.trim() === "") return;
@@ -93,7 +98,7 @@ export default {
       if (response.data == 1) {
         // alert("연결 성공");
       } else {
-        alert("유효하지 않은 접근입니다.");
+        alert("유효하지 않은 접근입니다. 채팅이 제한됩니다.");
       }
     });
   },
