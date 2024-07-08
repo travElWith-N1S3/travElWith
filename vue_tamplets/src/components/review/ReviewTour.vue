@@ -6,7 +6,9 @@
       </router-link>
       <h1 class="review-title">{{ review.tw_review_title }}</h1>
       <div>
-        <a href="#" class="btn btn-edit">수정</a>
+        <router-link :to="'/review/update/' + review.tw_review_no" class="btn btn-edit">
+          수정
+        </router-link>
         <a href="#" class="btn btn-delete" @click="deleteReview">삭제</a>
       </div>
     </div>

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import MainHome from "../views/MainHome.vue";
 import ReviewTour from "../components/review/ReviewTour.vue";
 import ReviewList from "../components/review/ReviewList.vue";
+import ReviewUpdate from "../components/review/ReviewUpdate.vue";
 import RecommendInfo from "../views/RecommendInfo.vue";
 import DestinationList from "../views/DestinationList.vue";
 import ReviewForm from "../components/review/ReviewForm.vue";
@@ -23,6 +24,12 @@ const routes = [
     path: "/reviews",
     name: "ReviewList",
     component: ReviewList,
+  },
+  {
+    path: "/review/update/:tw_review_no",
+    name: "ReviewUpdate",
+    component: ReviewUpdate,
+    props: true
   },
   {
     path: "/destinationList",
