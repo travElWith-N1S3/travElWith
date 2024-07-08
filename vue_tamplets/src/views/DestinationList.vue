@@ -13,17 +13,54 @@
       <div class="row">
         <!-- 여행지 카드 -->
         <destination-card
-          v-for="(destination, index) in filteredDestinations"
+          v-for="(destination, index) in destinations"
           :key="index"
           :destination="destination"
         />
       </div>
     </div>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center mb-0">
+        <li class="page-item" :class="{ disabled: currentPage === 1 }">
+          <router-link
+            :to="
+              currentPage > 1
+                ? {
+                    path: '/v1/destinationList',
+                    query: { page: currentPage - 1 },
+                  }
+                : ''
+            "
+            class="page-link"
+            :class="{ disabled: currentPage <= 1 }"
+            @click="prevPage"
+          >
+            이전
+          </router-link>
+        </li>
+        <li class="page-item active">
+          <a class="page-link" href="#">{{ currentPage }}</a>
+        </li>
+        <li class="page-item">
+          <router-link
+            :to="{
+              path: '/v1/destinationList',
+              query: { page: currentPage + 1 },
+            }"
+            class="page-link"
+            :class="{ disabled: currentPage >= totalPage }"
+            @click="nextPage"
+          >
+            다음
+          </router-link>
+        </li>
+      </ul>
+    </nav>
   </div>
 </template>
 
 <script>
-import DestinationCard from "../components/recommend/DestinationCard.vue"
+import DestinationCard from "../components/recommend/DestinationCard.vue";
 
 export default {
   name: "DestinationList",
@@ -32,64 +69,52 @@ export default {
   },
   data() {
     return {
+      currentPage: 1, // 초기 페이지를 1로 설정
       searchQuery: "",
-      destinations: [
-        {
-          title: "여행지 1",
-          image: "https://via.placeholder.com/600x400",
-          description:
-            "이곳은 자연 경관이 아름다운 곳입니다. 특히 푸른 바다와 여유로운 분위기가 매력적입니다.",
-        },
-        {
-          title: "여행지 2",
-          image: "https://via.placeholder.com/600x400",
-          description:
-            "이곳은 역사와 문화가 풍부한 곳입니다. 다채로운 유적지와 전통 건축물이 매력적입니다.",
-        },
-        {
-          title: "여행지 3",
-          image: "https://via.placeholder.com/600x400",
-          description:
-            "이곳은 현대적이고 활기찬 도시 생활을 경험할 수 있는 곳입니다. 다채로운 엔터테인먼트와 먹거리가 매력입니다.",
-        },
-        {
-          title: "여행지 4",
-          image: "https://via.placeholder.com/600x400",
-          description:
-            "이곳은 신비로운 자연 경관과 독특한 문화가 조화를 이루는 곳입니다. 독특한 체험과 충만한 휴식을 제공합니다.",
-        },
-      ],
-    }
+      destinations: [],
+      pageSize: 10, // 페이지 당 목록 수
+    };
   },
-  computed: {
-    filteredDestinations() {
-      return this.destinations.filter((destination) =>
-        destination.title.includes(this.searchQuery)
-      )
+  methods: {
+    getAllList() {
+      this.$axios
+        .get(
+          `http://localhost:8080/v1/destinationList?page=${this.currentPage}` // API 호출 시 페이지 번호 조정
+        )
+        .then((response) => {
+          this.destinations = response.data.content;
+          this.totalPage = response.data.totalPages;
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+    },
+    nextPage() {
+      this.$router.push({ query: { page: this.currentPage + 1 } });
+    },
+    prevPage() {
+      this.$router.push({ query: { page: this.currentPage - 1 } });
     },
   },
-}
+  watch: {
+    // $route 객체의 변경을 감지하여 데이터를 새로 불러옴
+    $route(to) {
+      this.currentPage = parseInt(to.query.page) || 1;
+      this.getAllList();
+    },
+  },
+  mounted() {
+    // 마운트 시 현재 페이지 설정
+    this.currentPage = parseInt(this.$route.query.page) || 1;
+    this.getAllList();
+  },
+};
 </script>
-
-<style>
-body {
-  background-color: #e6f7ff; /* 연한 하늘색 배경 */
-  padding-top: 20px;
+<style scoped>
+.row {
+  padding: 10px;
 }
-.site-name {
-  text-align: center;
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-.container {
-  background-color: #ffffff; /* 메인 컨테이너 배경색 하얀색 */
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  margin-bottom: 20px;
-}
-.search-bar {
-  margin-bottom: 20px;
+ul {
+  margin: 10px;
 }
 </style>
