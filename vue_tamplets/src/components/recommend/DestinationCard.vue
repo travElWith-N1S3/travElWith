@@ -1,18 +1,18 @@
 <template>
   <div class="col-md-6">
-    <div class="card">
-      <img
-        :src="destination.image"
-        class="card-img-top"
-        :alt="destination.title"
-      />
-      <router-link to="spot/info">
+    <router-link :to="'/destination/info?id=' + destination.id">
+      <div class="card">
+        <img
+          :src="destination.images[0]"
+          class="card-img-top"
+          :alt="destination.title"
+        />
         <div class="card-body">
           <h5 class="card-title">{{ destination.title }}</h5>
-          <p class="card-text">{{ destination.description }}</p>
+          <p class="card-text">{{ destination.contents }}</p>
         </div>
-      </router-link>
-    </div>
+      </div>
+    </router-link>
   </div>
 </template>
 
@@ -22,7 +22,7 @@ export default {
   props: {
     destination: Object,
   },
-}
+};
 </script>
 
 <style scoped>
@@ -51,5 +51,15 @@ a {
 }
 .card-text {
   color: #333333; /* 텍스트 색상 다크 그레이 */
+}
+.card-text {
+  display: -webkit-box; /* Flexbox 모델을 사용하여 요소를 정렬 */
+  -webkit-box-orient: vertical; /* Flexbox 방향을 수직으로 설정 */
+  -webkit-line-clamp: 2; /* 라인 클램프를 2줄로 설정 */
+  max-height: 48px;
+  overflow: hidden; /* 넘치는 콘텐츠를 숨김 */
+  text-overflow: ellipsis; /* 넘치는 텍스트에 ...을 표시 */
+  height: 3em; /* 2줄에 맞는 높이 설정 (줄 간격에 따라 조정 필요) */
+  line-height: 1.5em; /* 줄 간격 설정 (height / line-height로 줄 수 계산) */
 }
 </style>

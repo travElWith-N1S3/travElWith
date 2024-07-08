@@ -68,19 +68,20 @@ export default {
   name: "App",
   data() {
     return {
-      spot: {
-        // id: "",
-        // title: "",
-        // content: "",
-      },
+      spot: {},
     };
+  },
+  created() {
+    this.id = this.$route.query.id;
   },
   methods: {
     init() {
-      this.$axios.get("http://localhost:8080/v1/spot").then((response) => {
-        console.log(response.data[0]);
-        this.spot = response.data[0];
-      });
+      this.$axios
+        .get("http://localhost:8080/v1/destination/info?id=" + this.id)
+        .then((response) => {
+          console.log(response.data);
+          this.spot = response.data;
+        });
     },
   },
   mounted() {

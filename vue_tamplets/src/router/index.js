@@ -27,6 +27,7 @@ const routes = [
     path: "/destinationList",
     name: "DestinationList",
     component: DestinationList,
+    query: { page: 0 },
   },
   {
     path: "/reviewForm",
@@ -34,9 +35,10 @@ const routes = [
     component: ReviewForm,
   },
   {
-    path: "/spot",
+    path: "/destination/info",
     name: "RecommendInfo",
     component: RecommendInfo,
+    query: { id: null },
   },
   {
     path: "/chatbot",
