@@ -1,6 +1,6 @@
 <template>
   <div>
-    <router-link to="/destinationList">
+    <router-link to="/destinationList?page=0">
       <h2>추천 여행지</h2>
     </router-link>
     <div class="card-deck">
@@ -9,7 +9,7 @@
         v-for="destination in destinations"
         :key="destination.title"
       >
-        <router-link to="/spot">
+        <router-link to="/destination/info">
           <img :src="destination.imgSrc" class="card-img-top" alt="..." />
           <div class="card-body">
             <h5 class="card-title">{{ destination.title }}</h5>

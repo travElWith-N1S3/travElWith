@@ -40,6 +40,9 @@
         </form>
       </div>
     </div>
+    <form action="http://localhost:8080/test">
+      <button>test</button>
+    </form>
   </div>
 </template>
 
@@ -56,12 +59,16 @@ export default {
   methods: {
     sendMessage() {
       this.$axios
-        .get("http://localhost:8080/v1/chatbot?prompt=" + this.userMessage)
+        .get(
+          "http://localhost:8080/v1/chatbot/chatting?prompt=" + this.userMessage
+        )
         .then((response) => {
-          this.chatHistory.push({
-            type: "bot",
-            text: response.data,
-          });
+          if (response.data != "") {
+            this.chatHistory.push({
+              type: "bot",
+              text: response.data,
+            });
+          }
         });
 
       if (this.userMessage.trim() === "") return;
@@ -82,10 +89,18 @@ export default {
       const chatBody = this.$refs.chatBody;
       chatBody.scrollTop = chatBody.scrollHeight;
     },
-    closeChat() {
-      // 챗봇 닫기 동작
-      console.log("챗봇을 닫습니다.");
-    },
+  },
+  mounted() {
+    this.$axios.defaults.withCredentials = true;
+    this.$axios.get("http://localhost:8080/v1/chatbot").then((response) => {
+      console.log(response.data);
+      console.log(response);
+      if (response.data == 1) {
+        // alert("연결 성공");
+      } else {
+        alert("유효하지 않은 접근입니다. 채팅이 제한됩니다.");
+      }
+    });
   },
 };
 </script>
