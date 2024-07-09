@@ -25,6 +25,9 @@
         <div class="form-group">
           <star-rating v-model="contentData.tw_review_rating"></star-rating>
         </div>
+        <div class="form-group">
+          <input type="file" @change="handleFileUpload" />
+        </div>
         <button type="submit" class="btn btn-submit">등록</button>
       </form>
     </div>
@@ -48,6 +51,7 @@ export default {
         tw_review_content: "",
         tw_review_rating: 0,
       },
+      selectedFile: null,
     }
   },
   methods: {
@@ -56,11 +60,23 @@ export default {
       console.log("리뷰 내용:", this.contentData.tw_review_content)
       console.log("별점:", this.contentData.tw_review_rating)
 
+      let formData = new FormData()
+      formData.append("tw_review_title", this.contentData.tw_review_title)
+      formData.append("tw_review_content", this.contentData.tw_review_content)
+      formData.append("tw_review_rating", this.contentData.tw_review_rating)
+      if (this.selectedFile) {
+        formData.append("file", this.selectedFile)
+      }
+
       axios
-        .post("/api1/reviewInsert", this.contentData)
+        .post("/api1/reviewInsert", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then((response) => {
           console.log(response.data)
-          if (response.data === "성공") {
+          if (response.data.includes("Inserted review")) {
             alert("리뷰가 성공적으로 등록되었습니다.")
             this.$router.push("/reviews")
           } else {
@@ -74,15 +90,18 @@ export default {
     updateContentData(event) {
       this.contentData.tw_review_content = event.target.value
     },
+    handleFileUpload(event) {
+      this.selectedFile = event.target.files[0]
+    },
   },
   mounted() {
     ClassicEditor.create(document.querySelector("#editor"), {
       language: "ko",
       ckfinder: {
-        uploadUrl: "https://example.com/upload",
+        uploadUrl: "https://new-upload-url.com/upload",
       },
       simpleUpload: {
-        uploadUrl: "https://example.com/upload",
+        uploadUrl: "https://new-upload-url.com/upload",
         withCredentials: true,
         headers: {
           "X-CSRF-TOKEN": "CSRF-Token",
@@ -131,6 +150,7 @@ body {
   border: none;
 }
 </style>
+
 <style>
 .ck-editor__editable {
   min-height: 300px;

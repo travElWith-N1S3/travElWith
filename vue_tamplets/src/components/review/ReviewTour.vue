@@ -22,13 +22,22 @@
           </div>
         </div>
       </div>
+      <div v-if="images.length > 0" class="review-images">
+        <div class="image-list">
+          <div v-for="(imageUrl, index) in images" :key="index" class="image-item">
+            <!-- 이미지 URL이 존재할 때만 이미지 표시 -->
+            <img v-if="imageUrl" :src="imageUrl" class="img-fluid" />
+            <!-- 이미지 URL이 없을 경우 아무 것도 표시하지 않음 -->
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from "axios"
-import StarRating from "../review/StarRating.vue"
+import axios from "axios";
+import StarRating from "../review/StarRating.vue";
 
 export default {
   name: "ReviewTour",
@@ -38,11 +47,12 @@ export default {
   data() {
     return {
       review: {},
-    }
+      images: [],
+    };
   },
   created() {
-    const tw_review_no = this.$route.params.tw_review_no
-    this.fetchReviewDetail(tw_review_no)
+    const tw_review_no = this.$route.params.tw_review_no;
+    this.fetchReviewDetail(tw_review_no);
   },
   methods: {
     fetchReviewDetail(tw_review_no) {
@@ -50,33 +60,42 @@ export default {
         .post("/api1/reviewView", { tw_review_no })
         .then((response) => {
           if (response.data.status) {
-            this.review = response.data.review
+            this.review = response.data.review;
+
+            // 응답에서 여러 이미지 URL을 처리
+            const imageUrls = [];
+            for (const key in response.data) {
+              if (key.startsWith("imageUrl")) {
+                imageUrls.push(response.data[key]);
+              }
+            }
+            this.images = imageUrls;
           } else {
-            console.error(response.data.error)
+            console.error(response.data.error);
           }
         })
         .catch((error) => {
-          console.error("There was an error!", error)
-        })
+          console.error("There was an error!", error);
+        });
     },
     deleteReview() {
-      const tw_review_no = this.$route.params.tw_review_no
+      const tw_review_no = this.$route.params.tw_review_no;
       axios
         .post("/api1/reviewDelete", { tw_review_no })
         .then((response) => {
           if (response.data.status) {
-            alert("삭제되었습니다.")
-            this.$router.push("/reviews")
+            alert("삭제되었습니다.");
+            this.$router.push("/reviews");
           } else {
-            console.error(response.data.error)
+            console.error(response.data.error);
           }
         })
         .catch((error) => {
-          console.error("There was an error!", error)
-        })
+          console.error("There was an error!", error);
+        });
     },
   },
-}
+};
 </script>
 
 <style scoped>
@@ -137,5 +156,9 @@ body {
 
 .star-rating {
   margin-top: -20px;
+}
+.img-fluid {
+  max-width: 100%;
+  height: auto;
 }
 </style>
