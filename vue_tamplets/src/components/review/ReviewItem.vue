@@ -1,18 +1,21 @@
 <template>
-  <div class="review-item">
-    <h4 class="review-title">{{ tw_review_title }}</h4>
-    <div class="review-content" v-html="tw_review_content"></div>
+  <div class="review-item" v-if="twReviewNo">
+    <h4 class="review-title">{{ twReviewTitle }}</h4>
+    <div class="review-content" v-html="twReviewContent"></div>
     <div class="star-rating">
-      <star-rating :modelValue="tw_review_rating" @update:modelValue="updateRating"></star-rating>
+      <star-rating :modelValue="twReviewRating" @update:modelValue="updateRating"></star-rating>
     </div>
     <div class="review-actions">
       <router-link
-        :to="{ name: 'ReviewTour', params: { tw_review_no: tw_review_no } }"
+        :to="{ name: 'ReviewTour', params: { twReviewNo: twReviewNo } }"
         class="btn btn-primary"
       >
         자세히보기
       </router-link>
     </div>
+  </div>
+  <div v-else>
+    Loading...
   </div>
 </template>
 
@@ -22,14 +25,17 @@ import StarRating from "../review/StarRating.vue";
 export default {
   components: { StarRating },
   props: {
-    tw_review_title: String,
-    tw_review_content: String,
-    tw_review_no: String,
-    tw_review_rating: Number,
+    twReviewTitle: String,
+    twReviewContent: String,
+    twReviewNo: {
+      type: String,
+      required: true // 필수 속성
+    },
+    twReviewRating: Number,
   },
   methods: {
     updateRating(newRating) {
-      this.$emit("update:tw_review_rating", newRating);
+      this.$emit("update:twReviewRating", newRating);
     },
   },
 };

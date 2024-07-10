@@ -16,6 +16,7 @@
           id="tw_review_content"
           cols="30"
           rows="10"
+          v-model="contentData.tw_review_content"
         ></textarea>
       </div>
       <div class="form-group">

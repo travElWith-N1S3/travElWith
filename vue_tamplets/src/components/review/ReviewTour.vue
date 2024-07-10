@@ -4,9 +4,9 @@
       <router-link to="/reviews" class="btn btn-secondary">
         리스트 돌아가기
       </router-link>
-      <h1 class="review-title">{{ review.tw_review_title }}</h1>
+      <h1 class="review-title">{{ review.twReviewTitle }}</h1>
       <div>
-        <router-link :to="'/review/update/' + review.tw_review_no" class="btn btn-edit">
+        <router-link :to="'/review/update/' + review.twReviewNo" class="btn btn-edit">
           수정
         </router-link>
         <a href="#" class="btn btn-delete" @click="deleteReview">삭제</a>
@@ -16,9 +16,9 @@
       <div class="card mb-3">
         <div class="card-body">
           <h5 class="card-title">리뷰 내용</h5>
-          <p class="card-text" v-html="review.tw_review_content"></p>
+          <p class="card-text" v-html="review.twReviewContent"></p>
           <div class="star-rating">
-            <star-rating :modelValue="review.tw_review_rating" />
+            <star-rating :modelValue="review.twReviewRating" />
           </div>
         </div>
       </div>
@@ -51,13 +51,13 @@ export default {
     };
   },
   created() {
-    const tw_review_no = this.$route.params.tw_review_no;
-    this.fetchReviewDetail(tw_review_no);
+    const twReviewNo = this.$route.params.twReviewNo;
+    this.fetchReviewDetail(twReviewNo);
   },
   methods: {
-    fetchReviewDetail(tw_review_no) {
+    fetchReviewDetail(twReviewNo) {
       axios
-        .post("/api1/reviewView", { tw_review_no })
+        .post("/api1/reviewView", { twReviewNo })
         .then((response) => {
           if (response.data.status) {
             this.review = response.data.review;
@@ -79,9 +79,9 @@ export default {
         });
     },
     deleteReview() {
-      const tw_review_no = this.$route.params.tw_review_no;
+      const twReviewNo = this.$route.params.twReviewNo;
       axios
-        .post("/api1/reviewDelete", { tw_review_no })
+        .post("/api1/reviewDelete", { twReviewNo })
         .then((response) => {
           if (response.data.status) {
             alert("삭제되었습니다.");

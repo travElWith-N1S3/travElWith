@@ -15,7 +15,7 @@ const routes = [
     component: MainHome,
   },
   {
-    path: '/review/:tw_review_no',
+    path: '/review/:twReviewNo',
     name: 'ReviewTour',
     component: ReviewTour,
     props: true
@@ -24,9 +24,10 @@ const routes = [
     path: "/reviews",
     name: "ReviewList",
     component: ReviewList,
+    query: { page: 0 },
   },
   {
-    path: "/review/update/:tw_review_no",
+    path: "/review/update/:twReviewNo",
     name: "ReviewUpdate",
     component: ReviewUpdate,
     props: true

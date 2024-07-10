@@ -12,17 +12,22 @@
           v-model="searchQuery"
         />
         <div class="input-group-append">
-          <button class="btn btn-outline-primary" type="button" @click="searchReviews">검색</button>
+          <button
+            class="btn btn-outline-primary"
+            type="button"
+            @click="searchReviews"
+          >
+            검색
+          </button>
         </div>
       </div>
       <ReviewItem
         v-for="review in filteredReviews"
-        :key="review.tw_review_no"
-        :tw_review_title="review.tw_review_title"
-        :tw_review_content="review.tw_review_content"
-        :tw_review_no="review.tw_review_no"
-        :tw_review_rating="review.tw_review_rating"
-        :link="`/review/${review.tw_review_no}`"
+        :key="review.twReviewNo"
+        :twReviewTitle="review.twReviewTitle"
+        :twReviewContent="review.twReviewContent"
+        :twReviewNo="review.twReviewNo"
+        :twReviewRating="review.twReviewRating"
       />
     </div>
 
@@ -30,16 +35,44 @@
     <div class="d-flex justify-content-between align-items-center">
       <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center mb-0">
-          <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">이전</a>
+          <li class="page-item" :class="{ disabled: currentPage === 1 }">
+            <router-link
+              :to="{
+                name: 'ReviewList',
+                query: { page: currentPage - 1 },
+              }"
+              class="page-link"
+              :class="{ disabled: currentPage <= 1 }"
+              @click="prevPage"
+            >
+              이전
+            </router-link>
           </li>
-          <li class="page-item active">
-            <a class="page-link" href="#">1</a>
+          <li
+            class="page-item"
+            v-for="page in totalPage"
+            :key="page"
+            :class="{ active: currentPage === page }"
+          >
+            <router-link
+              :to="{ name: 'ReviewList', query: { page: page } }"
+              class="page-link"
+            >
+              {{ page }}
+            </router-link>
           </li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#">다음</a>
+          <li class="page-item" :class="{ disabled: currentPage === totalPage }">
+            <router-link
+              :to="{
+                name: 'ReviewList',
+                query: { page: currentPage + 1 },
+              }"
+              class="page-link"
+              :class="{ disabled: currentPage >= totalPage }"
+              @click="nextPage"
+            >
+              다음
+            </router-link>
           </li>
         </ul>
       </nav>
@@ -51,7 +84,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from "axios"
 import ReviewItem from "./ReviewItem.vue"
 
 export default {
@@ -60,38 +93,64 @@ export default {
   },
   data() {
     return {
+      currentPage: 1,
       reviews: [],
-      searchQuery: ''
+      searchQuery: "",
+      pageSize: 10,
+      totalPage: 0,
     }
   },
   computed: {
     filteredReviews() {
-      return this.reviews.filter(review => {
-        return review.tw_review_title.includes(this.searchQuery) || review.tw_review_content.includes(this.searchQuery);
-      });
-    }
+      return this.reviews.filter((review) => {
+        const title = review.twReviewTitle || ""
+        const content = review.twReviewContent || ""
+
+        return (
+          title.includes(this.searchQuery) || content.includes(this.searchQuery)
+        )
+      })
+    },
   },
   methods: {
     fetchReviews() {
-      axios.post('/api1/reviewList')
-        .then(response => {
+      axios
+        .get(`/api1/reviewList?page=${this.currentPage}`)
+        .then((response) => {
           if (response.data.status) {
-            this.reviews = response.data.list;
+            this.reviews = response.data.reviews
+            this.totalPage = response.data.totalPages
           } else {
-            console.error("Error fetching reviews:", response.data.error);
+            console.error("Error fetching reviews:", response.data.error)
           }
         })
-        .catch(error => {
-          console.error("There was an error fetching the reviews!", error);
-        });
+        .catch((error) => {
+          console.error("There was an error fetching the reviews!", error)
+        })
+    },
+    nextPage() {
+      this.$router.push({ query: { page: this.currentPage + 1 } })
+    },
+    prevPage() {
+      this.$router.push({ query: { page: this.currentPage - 1 } })
     },
     searchReviews() {
       // Implement search functionality here
     },
   },
   created() {
-    this.fetchReviews();
-  }
+    this.fetchReviews()
+  },
+  watch: {
+    $route(to) {
+      this.currentPage = parseInt(to.query.page) || 1
+      this.fetchReviews()
+    },
+  },
+  mounted() {
+    this.currentPage = parseInt(this.$route.query.page) || 1
+    this.fetchReviews()
+  },
 }
 </script>
 
@@ -117,5 +176,11 @@ export default {
 .pagination {
   justify-content: center;
   margin-top: 20px;
+}
+.row {
+  padding: 10px;
+}
+ul {
+  margin: 10px;
 }
 </style>

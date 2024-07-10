@@ -19,6 +19,7 @@
             id="editor"
             cols="30"
             rows="10"
+            placeholder="놀러가신 위치, 내용 등을 입력해주세요."
             @input="updateContentData"
           ></textarea>
         </div>
