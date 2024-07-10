@@ -7,15 +7,15 @@
           <input
             type="text"
             class="form-control"
-            id="tw_review_title"
-            v-model="contentData.tw_review_title"
+            id="twReviewTitle"
+            v-model="contentData.twReviewTitle"
             placeholder="리뷰 제목을 입력하세요..."
           />
         </div>
         <div class="form-group">
           <textarea
-            v-model="contentData.tw_review_content"
-            name="tw_review_content"
+            v-model="contentData.twReviewContent"
+            name="twReviewContent"
             id="editor"
             cols="30"
             rows="10"
@@ -24,7 +24,7 @@
           ></textarea>
         </div>
         <div class="form-group">
-          <star-rating v-model="contentData.tw_review_rating"></star-rating>
+          <star-rating v-model="contentData.twReviewRating"></star-rating>
         </div>
         <div class="form-group">
           <input type="file" @change="handleFileUpload" />
@@ -48,23 +48,23 @@ export default {
   data() {
     return {
       contentData: {
-        tw_review_title: "",
-        tw_review_content: "",
-        tw_review_rating: 0,
+        twReviewTitle: "",
+        twReviewContent: "",
+        twReviewRating: 0,
       },
       selectedFile: null,
     }
   },
   methods: {
     submitReview() {
-      console.log("리뷰 제목:", this.contentData.tw_review_title)
-      console.log("리뷰 내용:", this.contentData.tw_review_content)
-      console.log("별점:", this.contentData.tw_review_rating)
+      console.log("리뷰 제목:", this.contentData.twReviewTitle)
+      console.log("리뷰 내용:", this.contentData.twReviewContent)
+      console.log("별점:", this.contentData.twReviewRating)
 
       let formData = new FormData()
-      formData.append("tw_review_title", this.contentData.tw_review_title)
-      formData.append("tw_review_content", this.contentData.tw_review_content)
-      formData.append("tw_review_rating", this.contentData.tw_review_rating)
+      formData.append("twReviewTitle", this.contentData.twReviewTitle)
+      formData.append("twReviewContent", this.contentData.twReviewContent)
+      formData.append("twReviewRating", this.contentData.twReviewRating)
       if (this.selectedFile) {
         formData.append("file", this.selectedFile)
       }
@@ -89,7 +89,7 @@ export default {
         })
     },
     updateContentData(event) {
-      this.contentData.tw_review_content = event.target.value
+      this.contentData.twReviewContent = event.target.value
     },
     handleFileUpload(event) {
       this.selectedFile = event.target.files[0]
@@ -111,7 +111,7 @@ export default {
     })
       .then((editor) => {
         editor.model.document.on("change:data", () => {
-          this.contentData.tw_review_content = editor.getData()
+          this.contentData.twReviewContent = editor.getData()
         })
       })
       .catch((error) => {
