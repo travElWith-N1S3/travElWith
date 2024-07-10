@@ -1,10 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
 import MainHome from "../views/MainHome.vue";
-import ReviewTour from "../views/ReviewTour.vue";
-import ReviewList from "../views/ReviewList.vue";
+import ReviewTour from "../components/review/ReviewTour.vue";
+import ReviewList from "../components/review/ReviewList.vue";
+import ReviewUpdate from "../components/review/ReviewUpdate.vue";
 import RecommendInfo from "../views/RecommendInfo.vue";
 import DestinationList from "../views/DestinationList.vue";
-import ReviewForm from "../views/ReviewForm.vue";
+import ReviewForm from "../components/review/ReviewForm.vue";
 import ChatBot from "../views/ChatBotMain.vue";
 
 const routes = [
@@ -14,14 +15,22 @@ const routes = [
     component: MainHome,
   },
   {
-    path: "/review",
-    name: "Review",
+    path: '/review/:twReviewNo',
+    name: 'ReviewTour',
     component: ReviewTour,
+    props: true
   },
   {
     path: "/reviews",
     name: "ReviewList",
     component: ReviewList,
+    query: { page: 0 },
+  },
+  {
+    path: "/review/update/:twReviewNo",
+    name: "ReviewUpdate",
+    component: ReviewUpdate,
+    props: true
   },
   {
     path: "/destinationList",

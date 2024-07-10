@@ -37,10 +37,10 @@ export default {
 .star {
   font-size: 2rem;
   cursor: pointer;
-  color: #ccc; /* 기본 별 색상 */
+  color: #ccc;
 }
 
 .star.filled {
-  color: gold; /* 채워진 별 색상 */
+  color: gold;
 }
 </style>
