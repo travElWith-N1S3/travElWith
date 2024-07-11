@@ -22,15 +22,6 @@
           </div>
         </div>
       </div>
-      <div v-if="images.length > 0" class="review-images">
-        <div class="image-list">
-          <div v-for="(imageUrl, index) in images" :key="index" class="image-item">
-            <!-- 이미지 URL이 존재할 때만 이미지 표시 -->
-            <img v-if="imageUrl" :src="imageUrl" class="img-fluid" />
-            <!-- 이미지 URL이 없을 경우 아무 것도 표시하지 않음 -->
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -47,7 +38,6 @@ export default {
   data() {
     return {
       review: {},
-      images: [],
     };
   },
   created() {
@@ -61,15 +51,6 @@ export default {
         .then((response) => {
           if (response.data.status) {
             this.review = response.data.review;
-
-            // 응답에서 여러 이미지 URL을 처리
-            const imageUrls = [];
-            for (const key in response.data) {
-              if (key.startsWith("imageUrl")) {
-                imageUrls.push(response.data[key]);
-              }
-            }
-            this.images = imageUrls;
           } else {
             console.error(response.data.error);
           }

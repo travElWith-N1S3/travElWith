@@ -20,14 +20,10 @@
             cols="30"
             rows="10"
             placeholder="놀러가신 위치, 내용 등을 입력해주세요."
-            @input="updateContentData"
           ></textarea>
         </div>
         <div class="form-group">
           <star-rating v-model="contentData.twReviewRating"></star-rating>
-        </div>
-        <div class="form-group">
-          <input type="file" @change="handleFileUpload" />
         </div>
         <button type="submit" class="btn btn-submit">등록</button>
       </form>
@@ -36,10 +32,10 @@
 </template>
 
 <script>
-import "bootstrap/dist/css/bootstrap.min.css"
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic"
-import StarRating from "../review/StarRating.vue"
-import axios from "axios"
+import "bootstrap/dist/css/bootstrap.min.css";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import StarRating from "../review/StarRating.vue";
+import axios from "axios";
 
 export default {
   components: {
@@ -52,22 +48,14 @@ export default {
         twReviewContent: "",
         twReviewRating: 0,
       },
-      selectedFile: null,
-    }
+    };
   },
   methods: {
     submitReview() {
-      console.log("리뷰 제목:", this.contentData.twReviewTitle)
-      console.log("리뷰 내용:", this.contentData.twReviewContent)
-      console.log("별점:", this.contentData.twReviewRating)
-
-      let formData = new FormData()
-      formData.append("twReviewTitle", this.contentData.twReviewTitle)
-      formData.append("twReviewContent", this.contentData.twReviewContent)
-      formData.append("twReviewRating", this.contentData.twReviewRating)
-      if (this.selectedFile) {
-        formData.append("file", this.selectedFile)
-      }
+      let formData = new FormData();
+      formData.append("twReviewTitle", this.contentData.twReviewTitle);
+      formData.append("twReviewContent", this.contentData.twReviewContent);
+      formData.append("twReviewRating", this.contentData.twReviewRating);
 
       axios
         .post("/api1/reviewInsert", formData, {
@@ -76,49 +64,37 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response.data)
-          if (response.data.includes("Inserted review")) {
-            alert("리뷰가 성공적으로 등록되었습니다.")
-            this.$router.push("/reviews")
+          console.log(response.data);
+          if (response.data.status) {
+            alert("리뷰가 성공적으로 등록되었습니다.");
+            this.$router.push("/reviews");
           } else {
-            alert("리뷰 등록에 실패했습니다.")
+            alert("리뷰 등록에 실패했습니다.");
           }
         })
         .catch((error) => {
-          console.error("There was an error!", error)
-        })
-    },
-    updateContentData(event) {
-      this.contentData.twReviewContent = event.target.value
-    },
-    handleFileUpload(event) {
-      this.selectedFile = event.target.files[0]
+          console.error("리뷰 등록 중 오류 발생", error);
+          alert("리뷰 등록 중 오류가 발생했습니다.");
+        });
     },
   },
   mounted() {
     ClassicEditor.create(document.querySelector("#editor"), {
       language: "ko",
       ckfinder: {
-        uploadUrl: "https://new-upload-url.com/upload",
-      },
-      simpleUpload: {
-        uploadUrl: "https://new-upload-url.com/upload",
-        withCredentials: true,
-        headers: {
-          "X-CSRF-TOKEN": "CSRF-Token",
-        },
+        uploadUrl: "/api1/imgUpload",
       },
     })
       .then((editor) => {
         editor.model.document.on("change:data", () => {
-          this.contentData.twReviewContent = editor.getData()
-        })
+          this.contentData.twReviewContent = editor.getData();
+        });
       })
       .catch((error) => {
-        console.error(error)
-      })
+        console.error("에디터 초기화 중 오류 발생", error);
+      });
   },
-}
+};
 </script>
 
 <style scoped>

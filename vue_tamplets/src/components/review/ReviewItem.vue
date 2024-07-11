@@ -51,7 +51,6 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  max-height: 200px;
   overflow: hidden;
   position: relative;
 }
