@@ -40,9 +40,6 @@
         </form>
       </div>
     </div>
-    <form action="http://localhost:8080/test">
-      <button>test</button>
-    </form>
   </div>
 </template>
 
