@@ -15,14 +15,14 @@
           <button
             class="btn btn-outline-primary"
             type="button"
-            @click="searchReviews"
+            @click="fetchReviews"
           >
             검색
           </button>
         </div>
       </div>
       <ReviewItem
-        v-for="review in filteredReviews"
+        v-for="review in reviews"
         :key="review.twReviewNo"
         :twReviewTitle="review.twReviewTitle"
         :twReviewContent="review.twReviewContent"
@@ -39,11 +39,11 @@
             <router-link
               :to="{
                 name: 'ReviewList',
-                query: { page: currentPage - 1 },
+                query: { page: currentPage - 1, query: searchQuery },
               }"
               class="page-link"
               :class="{ disabled: currentPage <= 1 }"
-              @click="prevPage"
+              @click.prevent="prevPage"
             >
               이전
             </router-link>
@@ -55,21 +55,28 @@
             :class="{ active: currentPage === page }"
           >
             <router-link
-              :to="{ name: 'ReviewList', query: { page: page } }"
+              :to="{
+                name: 'ReviewList',
+                query: { page: page, query: searchQuery },
+              }"
               class="page-link"
+              @click.prevent="goToPage(page, $event)"
             >
               {{ page }}
             </router-link>
           </li>
-          <li class="page-item" :class="{ disabled: currentPage === totalPage }">
+          <li
+            class="page-item"
+            :class="{ disabled: currentPage === totalPage }"
+          >
             <router-link
               :to="{
                 name: 'ReviewList',
-                query: { page: currentPage + 1 },
+                query: { page: currentPage + 1, query: searchQuery },
               }"
               class="page-link"
               :class="{ disabled: currentPage >= totalPage }"
-              @click="nextPage"
+              @click.prevent="nextPage"
             >
               다음
             </router-link>
@@ -100,56 +107,56 @@ export default {
       totalPage: 0,
     }
   },
-  computed: {
-    filteredReviews() {
-      return this.reviews.filter((review) => {
-        const title = review.twReviewTitle || ""
-        const content = review.twReviewContent || ""
-
-        return (
-          title.includes(this.searchQuery) || content.includes(this.searchQuery)
-        )
-      })
-    },
-  },
   methods: {
     fetchReviews() {
+      const page = this.currentPage - 1
+      const query = this.searchQuery
+
       axios
-        .get(`/api1/reviewList?page=${this.currentPage}`)
+        .get(`/api1/reviewSearch?query=${query}&page=${page}`)
         .then((response) => {
           if (response.data.status) {
             this.reviews = response.data.reviews
             this.totalPage = response.data.totalPages
           } else {
-            console.error("Error fetching reviews:", response.data.error)
+            console.error("리뷰를 가져오는 중 오류 발생:", response.data.error)
           }
         })
         .catch((error) => {
-          console.error("There was an error fetching the reviews!", error)
+          console.error("리뷰를 가져오는 중 오류가 발생했습니다!", error)
         })
     },
-    nextPage() {
-      this.$router.push({ query: { page: this.currentPage + 1 } })
+    nextPage(event) {
+      event.preventDefault()
+      if (this.currentPage < this.totalPage) {
+        this.currentPage++
+        this.fetchReviews()
+      }
     },
-    prevPage() {
-      this.$router.push({ query: { page: this.currentPage - 1 } })
+    prevPage(event) {
+      event.preventDefault()
+      if (this.currentPage > 1) {
+        this.currentPage--
+        this.fetchReviews()
+      }
     },
-    searchReviews() {
-      // Implement search functionality here
+    goToPage(page, event) {
+      event.preventDefault()
+      this.currentPage = page
+      this.fetchReviews()
     },
   },
   created() {
+    this.currentPage = parseInt(this.$route.query.page) || 1
+    this.searchQuery = this.$route.query.query || ""
     this.fetchReviews()
   },
   watch: {
     $route(to) {
       this.currentPage = parseInt(to.query.page) || 1
+      this.searchQuery = to.query.query || ""
       this.fetchReviews()
     },
-  },
-  mounted() {
-    this.currentPage = parseInt(this.$route.query.page) || 1
-    this.fetchReviews()
   },
 }
 </script>
