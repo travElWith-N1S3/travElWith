@@ -22,7 +22,7 @@
         </div>
       </div>
       <ReviewItem
-        v-for="review in filteredReviews"
+        v-for="review in reviews"
         :key="review.twReviewNo"
         :twReviewTitle="review.twReviewTitle"
         :twReviewContent="review.twReviewContent"
@@ -100,18 +100,6 @@ export default {
       totalPage: 0,
     }
   },
-  computed: {
-    filteredReviews() {
-      return this.reviews.filter((review) => {
-        const title = review.twReviewTitle || ""
-        const content = review.twReviewContent || ""
-
-        return (
-          title.includes(this.searchQuery) || content.includes(this.searchQuery)
-        )
-      })
-    },
-  },
   methods: {
     fetchReviews() {
       axios
@@ -121,11 +109,11 @@ export default {
             this.reviews = response.data.reviews
             this.totalPage = response.data.totalPages
           } else {
-            console.error("Error fetching reviews:", response.data.error)
+            console.error("리뷰를 가져오는 중 오류 발생:", response.data.error)
           }
         })
         .catch((error) => {
-          console.error("There was an error fetching the reviews!", error)
+          console.error("리뷰를 가져오는 중 오류가 발생했습니다!", error)
         })
     },
     nextPage() {
@@ -135,7 +123,19 @@ export default {
       this.$router.push({ query: { page: this.currentPage - 1 } })
     },
     searchReviews() {
-      // Implement search functionality here
+      axios
+        .get(`/api1/reviewSearch?query=${this.searchQuery}`)
+        .then((response) => {
+          if (response.data.status) {
+            this.reviews = response.data.reviews
+            this.totalPage = Math.ceil(this.reviews.length / this.pageSize)
+          } else {
+            console.error("검색 중 오류 발생:", response.data.error)
+          }
+        })
+        .catch((error) => {
+          console.error("검색 중 오류가 발생했습니다!", error)
+        })
     },
   },
   created() {
@@ -146,6 +146,9 @@ export default {
       this.currentPage = parseInt(to.query.page) || 1
       this.fetchReviews()
     },
+    searchQuery() {
+      this.searchReviews()
+    }
   },
   mounted() {
     this.currentPage = parseInt(this.$route.query.page) || 1
