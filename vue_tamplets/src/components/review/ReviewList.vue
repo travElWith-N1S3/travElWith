@@ -15,7 +15,7 @@
           <button
             class="btn btn-outline-primary"
             type="button"
-            @click="searchReviews"
+            @click="fetchReviews"
           >
             검색
           </button>
@@ -39,11 +39,11 @@
             <router-link
               :to="{
                 name: 'ReviewList',
-                query: { page: currentPage - 1 },
+                query: { page: currentPage - 1, query: searchQuery },
               }"
               class="page-link"
               :class="{ disabled: currentPage <= 1 }"
-              @click="prevPage"
+              @click.prevent="prevPage"
             >
               이전
             </router-link>
@@ -55,21 +55,28 @@
             :class="{ active: currentPage === page }"
           >
             <router-link
-              :to="{ name: 'ReviewList', query: { page: page } }"
+              :to="{
+                name: 'ReviewList',
+                query: { page: page, query: searchQuery },
+              }"
               class="page-link"
+              @click.prevent="goToPage(page, $event)"
             >
               {{ page }}
             </router-link>
           </li>
-          <li class="page-item" :class="{ disabled: currentPage === totalPage }">
+          <li
+            class="page-item"
+            :class="{ disabled: currentPage === totalPage }"
+          >
             <router-link
               :to="{
                 name: 'ReviewList',
-                query: { page: currentPage + 1 },
+                query: { page: currentPage + 1, query: searchQuery },
               }"
               class="page-link"
               :class="{ disabled: currentPage >= totalPage }"
-              @click="nextPage"
+              @click.prevent="nextPage"
             >
               다음
             </router-link>
@@ -102,8 +109,11 @@ export default {
   },
   methods: {
     fetchReviews() {
+      const page = this.currentPage - 1
+      const query = this.searchQuery
+
       axios
-        .get(`/api1/reviewList?page=${this.currentPage}`)
+        .get(`/api1/reviewSearch?query=${query}&page=${page}`)
         .then((response) => {
           if (response.data.status) {
             this.reviews = response.data.reviews
@@ -116,43 +126,37 @@ export default {
           console.error("리뷰를 가져오는 중 오류가 발생했습니다!", error)
         })
     },
-    nextPage() {
-      this.$router.push({ query: { page: this.currentPage + 1 } })
+    nextPage(event) {
+      event.preventDefault()
+      if (this.currentPage < this.totalPage) {
+        this.currentPage++
+        this.fetchReviews()
+      }
     },
-    prevPage() {
-      this.$router.push({ query: { page: this.currentPage - 1 } })
+    prevPage(event) {
+      event.preventDefault()
+      if (this.currentPage > 1) {
+        this.currentPage--
+        this.fetchReviews()
+      }
     },
-    searchReviews() {
-      axios
-        .get(`/api1/reviewSearch?query=${this.searchQuery}`)
-        .then((response) => {
-          if (response.data.status) {
-            this.reviews = response.data.reviews
-            this.totalPage = Math.ceil(this.reviews.length / this.pageSize)
-          } else {
-            console.error("검색 중 오류 발생:", response.data.error)
-          }
-        })
-        .catch((error) => {
-          console.error("검색 중 오류가 발생했습니다!", error)
-        })
+    goToPage(page, event) {
+      event.preventDefault()
+      this.currentPage = page
+      this.fetchReviews()
     },
   },
   created() {
+    this.currentPage = parseInt(this.$route.query.page) || 1
+    this.searchQuery = this.$route.query.query || ""
     this.fetchReviews()
   },
   watch: {
     $route(to) {
       this.currentPage = parseInt(to.query.page) || 1
+      this.searchQuery = to.query.query || ""
       this.fetchReviews()
     },
-    searchQuery() {
-      this.searchReviews()
-    }
-  },
-  mounted() {
-    this.currentPage = parseInt(this.$route.query.page) || 1
-    this.fetchReviews()
   },
 }
 </script>
