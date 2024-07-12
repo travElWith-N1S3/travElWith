@@ -12,12 +12,7 @@
         />
       </div>
       <div class="form-group">
-        <textarea
-          id="twReviewContent"
-          cols="30"
-          rows="10"
-          v-model="contentData.twReviewContent"
-        ></textarea>
+        <textarea id="editor" cols="30" rows="10"></textarea>
       </div>
       <div class="form-group">
         <star-rating v-model="contentData.twReviewRating"></star-rating>
@@ -45,28 +40,10 @@ export default {
         twReviewContent: "",
         twReviewRating: 0,
       },
-      editor: null,
+      editorInstance: null,
     }
   },
   methods: {
-    fetchReviewDetails(reviewId) {
-      axios
-        .post("/api1/reviewView", { twReviewNo: reviewId })
-        .then((response) => {
-          const review = response.data.review
-          this.contentData.twReviewNo = String(review.twReviewNo)
-          this.contentData.twReviewTitle = review.twReviewTitle || ""
-          this.contentData.twReviewContent = review.twReviewContent || ""
-          this.contentData.twReviewRating = review.twReviewRating || 0
-
-          if (this.editor) {
-            this.editor.setData(this.contentData.twReviewContent)
-          }
-        })
-        .catch((error) => {
-          console.error("리뷰 정보를 가져오는 중 오류 발생:", error)
-        })
-    },
     updateReview() {
       if (
         !this.contentData.twReviewTitle ||
@@ -101,30 +78,38 @@ export default {
   mounted() {
     const reviewId = this.$route.params.twReviewNo
 
-    ClassicEditor.create(document.querySelector("#twReviewContent"), {
-      language: "ko",
-      ckfinder: {
-        uploadUrl: "https://example.com/upload",
-      },
-      simpleUpload: {
-        uploadUrl: "https://example.com/upload",
-        withCredentials: true,
-        headers: {
-          "X-CSRF-TOKEN": "CSRF-Token",
-        },
-      },
-    })
-      .then((editor) => {
-        this.editor = editor
+    axios
+      .post("/api1/reviewView", { twReviewNo: reviewId })
+      .then((response) => {
+        const review = response.data.review
+        this.contentData.twReviewNo = String(review.twReviewNo)
+        this.contentData.twReviewTitle = review.twReviewTitle || ""
+        this.contentData.twReviewContent = review.twReviewContent || ""
+        this.contentData.twReviewRating = review.twReviewRating || 0
 
-        editor.model.document.on("change:data", () => {
-          this.contentData.twReviewContent = editor.getData()
+        ClassicEditor.create(document.querySelector("#editor"), {
+          language: "ko",
+          ckfinder: {
+            uploadUrl: "/api1/imgUpload",
+          },
         })
+          .then((editor) => {
+            this.editorInstance = editor
 
-        this.fetchReviewDetails(reviewId)
+            // CKEditor의 데이터 변경 이벤트를 핸들링합니다.
+            editor.model.document.on("change:data", () => {
+              this.contentData.twReviewContent = editor.getData()
+            })
+
+            // CKEditor가 초기화된 후 데이터를 설정합니다.
+            editor.setData(this.contentData.twReviewContent)
+          })
+          .catch((error) => {
+            console.error("에디터 초기화 중 오류 발생", error)
+          })
       })
       .catch((error) => {
-        console.error("CKEditor 초기화 중 오류 발생:", error)
+        console.error("리뷰 정보를 가져오는 중 오류 발생:", error)
       })
   },
 }
