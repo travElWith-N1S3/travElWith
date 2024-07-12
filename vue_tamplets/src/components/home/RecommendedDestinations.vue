@@ -43,7 +43,6 @@ export default {
           `http://localhost:8080/v1/top-tour-spot` // API 호출 시 페이지 번호 조정
         )
         .then((response) => {
-          console.log(response.data);
           this.destinations = response.data;
         })
         .catch((error) => {

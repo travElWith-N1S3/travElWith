@@ -3,15 +3,41 @@
     <div class="col-12">
       <h2>실시간 인기 여행지 순위</h2>
       <ul class="list-group">
-        <li class="list-group-item">1. 제주도</li>
-        <li class="list-group-item">2. 서울</li>
-        <li class="list-group-item">3. 부산</li>
-        <li class="list-group-item">4. 경주</li>
-        <li class="list-group-item">5. 전주</li>
+        <li
+          class="list-group-item"
+          v-for="(item, index) in spot"
+          :key="item.id"
+        >
+          {{ index + 1 }}. {{ item }}
+        </li>
       </ul>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  name: "App",
+  data() {
+    return {
+      spot: [], // spot 데이터를 배열로 초기화
+    };
+  },
+  methods: {
+    getPopular() {
+      this.$axios
+        .get("http://localhost:8080/v1/popular-destination")
+        .then((response) => {
+          console.log(response.data);
+          this.spot = response.data;
+        });
+    },
+  },
+  mounted() {
+    this.getPopular();
+  },
+};
+</script>
 
 <style>
 .popular-destinations {

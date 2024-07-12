@@ -64,7 +64,6 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response.data);
           if (response.data.status) {
             alert("리뷰가 성공적으로 등록되었습니다.");
             this.$router.push("/reviews");
