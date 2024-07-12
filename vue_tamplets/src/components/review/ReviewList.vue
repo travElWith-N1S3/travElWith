@@ -21,6 +21,7 @@
           </button>
         </div>
       </div>
+
       <ReviewItem
         v-for="review in reviews"
         :key="review.twReviewNo"
@@ -30,7 +31,7 @@
         :twReviewRating="review.twReviewRating"
       />
     </div>
-
+    
     <!-- 페이징 및 리뷰 등록 버튼 -->
     <div class="d-flex justify-content-between align-items-center">
       <nav aria-label="Page navigation example">
@@ -48,9 +49,10 @@
               이전
             </router-link>
           </li>
+
           <li
             class="page-item"
-            v-for="page in totalPage"
+            v-for="page in displayedPages"
             :key="page"
             :class="{ active: currentPage === page }"
           >
@@ -65,6 +67,7 @@
               {{ page }}
             </router-link>
           </li>
+
           <li
             class="page-item"
             :class="{ disabled: currentPage === totalPage }"
@@ -83,6 +86,7 @@
           </li>
         </ul>
       </nav>
+
       <router-link to="/reviewForm">
         <button class="btn btn-primary ml-3">리뷰 등록</button>
       </router-link>
@@ -106,6 +110,20 @@ export default {
       pageSize: 10,
       totalPage: 0,
     }
+  },
+  computed: {
+    displayedPages() {
+      // 10페이지씩 페이징
+      let startPage = Math.max(1, this.currentPage - 4)
+      let endPage = Math.min(this.totalPage, startPage + 9)
+      if (endPage - startPage < 9) {
+        startPage = Math.max(1, endPage - 9)
+      }
+      return Array.from(
+        { length: endPage - startPage + 1 },
+        (_, i) => startPage + i
+      )
+    },
   },
   methods: {
     fetchReviews() {
