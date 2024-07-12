@@ -3,19 +3,23 @@
     <router-link to="/destinationList?page=0">
       <h2>추천 여행지</h2>
     </router-link>
-    <div class="card-deck">
+    <div class="row">
       <div
-        class="card"
+        class="col-md-4 mb-4"
         v-for="destination in destinations"
         :key="destination.title"
       >
-        <router-link to="/destination/info">
-          <img :src="destination.imgSrc" class="card-img-top" alt="..." />
-          <div class="card-body">
-            <h5 class="card-title">{{ destination.title }}</h5>
-            <p class="card-text">{{ destination.text }}</p>
-          </div>
-        </router-link>
+        <div class="card">
+          <router-link
+            :to="{ path: '/destination/info', query: { id: destination.id } }"
+          >
+            <img :src="destination.images[0]" class="card-img-top" alt="..." />
+            <div class="card-body">
+              <h5 class="card-title">{{ destination.title }}</h5>
+              <p class="card-text">{{ destination.contents }}</p>
+            </div>
+          </router-link>
+        </div>
       </div>
     </div>
   </div>
@@ -26,29 +30,25 @@ export default {
   name: "RecommendedDestinations",
   data() {
     return {
-      destinations: [
-        {
-          title: "여행지 1",
-          imgSrc: "https://via.placeholder.com/150",
-          text: "이곳에 여행지 1의 설명이 들어갑니다.",
-        },
-        {
-          title: "여행지 2",
-          imgSrc: "https://via.placeholder.com/150",
-          text: "이곳에 여행지 2의 설명이 들어갑니다.",
-        },
-        {
-          title: "여행지 3",
-          imgSrc: "https://via.placeholder.com/150",
-          text: "이곳에 여행지 3의 설명이 들어갑니다.",
-        },
-        {
-          title: "여행지 4",
-          imgSrc: "https://via.placeholder.com/150",
-          text: "이곳에 여행지 4의 설명이 들어갑니다.",
-        },
-      ],
+      destinations: [],
     };
+  },
+  mounted() {
+    this.getSpot3List();
+  },
+  methods: {
+    getSpot3List() {
+      this.$axios
+        .get(
+          `http://localhost:8080/v1/top-tour-spot` // API 호출 시 페이지 번호 조정
+        )
+        .then((response) => {
+          this.destinations = response.data;
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+    },
   },
 };
 </script>

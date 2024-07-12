@@ -40,9 +40,6 @@
         </form>
       </div>
     </div>
-    <form action="http://localhost:8080/test">
-      <button>test</button>
-    </form>
   </div>
 </template>
 
@@ -93,8 +90,6 @@ export default {
   mounted() {
     this.$axios.defaults.withCredentials = true;
     this.$axios.get("http://localhost:8080/v1/chatbot").then((response) => {
-      console.log(response.data);
-      console.log(response);
       if (response.data == 1) {
         // alert("연결 성공");
       } else {
