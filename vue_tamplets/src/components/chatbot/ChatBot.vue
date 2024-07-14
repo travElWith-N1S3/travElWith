@@ -25,7 +25,7 @@
         </div>
       </div>
       <div class="card-footer">
-        <form @submit.prevent="sendMessage">
+        <form @submit.prevent="sendMessage2">
           <div class="input-group">
             <input
               type="text"
@@ -47,40 +47,85 @@
 export default {
   data() {
     return {
+      id: "",
       userMessage: "",
       chatHistory: [
         { type: "bot", text: "안녕하세요! 여행지 추천을 도와드릴게요." },
       ],
+      websocket: null,
     };
   },
   methods: {
-    sendMessage() {
-      this.$axios
-        .get(
-          "http://localhost:8080/v1/chatbot/chatting?prompt=" + this.userMessage
-        )
-        .then((response) => {
-          if (response.data != "") {
-            this.chatHistory.push({
-              type: "bot",
-              text: response.data,
-            });
-          }
-        });
-
-      if (this.userMessage.trim() === "") return;
-
-      // 사용자 메시지 추가
+    getMessage() {
+      this.websocket.onmessage = (event) => {
+        console.log(JSON.parse(event.data));
+        this.receiveMsg(event);
+      };
+    },
+    receiveMsg(msg) {
+      var messageInfo = JSON.parse(msg.data);
+      this.chatHistory.push({ type: "bot", text: messageInfo });
+    },
+    sendMessage2() {
+      console.log("cookie");
+      this.id = this.getCookie("ask_token");
+      console.log(this.id);
+      this.websocket.send(
+        JSON.stringify({ id: this.id, text: this.userMessage })
+      );
       this.chatHistory.push({ type: "user", text: this.userMessage });
-
-      // 메시지 전송 후 입력창 초기화
       this.userMessage = "";
-
-      // 스크롤을 가장 하단으로 이동
       this.$nextTick(() => {
         this.scrollToBottom();
       });
     },
+
+    initWebSocket() {
+      this.websocket = new WebSocket("ws://localhost:8080/ws/chat");
+      this.websocket.onopen = () => {
+        console.log("WebSocket 연결 성공");
+      };
+    },
+
+    getCookie(name) {
+      const cookies = document.cookie.split(";");
+      for (let cookie of cookies) {
+        console.log(cookie);
+        const [cookieName, cookieValue] = cookie.split("=");
+        if (cookieName.trim() === name) {
+          return cookieValue;
+        }
+      }
+      return null; // 해당 이름의 쿠키가 없는 경우
+    },
+
+    // sendMessage() {
+    //   this.$axios
+    //     .get(
+    //       "http://localhost:8080/v1/chatbot/chatting?prompt=" + this.userMessage
+    //     )
+    //     .then((response) => {
+    //       if (response.data != "") {
+    //         this.chatHistory.push({
+    //           type: "bot",
+    //           text: response.data,
+    //         });
+    //       }
+    //     });
+
+    //   if (this.userMessage.trim() === "") return;
+
+    //   // 사용자 메시지 추가
+    //   this.chatHistory.push({ type: "user", text: this.userMessage });
+
+    //   // 메시지 전송 후 입력창 초기화
+    //   this.userMessage = "";
+
+    //   // 스크롤을 가장 하단으로 이동
+    //   this.$nextTick(() => {
+    //     this.scrollToBottom();
+    //   });
+    // },
 
     scrollToBottom() {
       const chatBody = this.$refs.chatBody;
@@ -88,6 +133,8 @@ export default {
     },
   },
   mounted() {
+    this.initWebSocket();
+    this.getMessage();
     this.$axios.defaults.withCredentials = true;
     this.$axios.get("http://localhost:8080/v1/chatbot").then((response) => {
       if (response.data == 1) {
