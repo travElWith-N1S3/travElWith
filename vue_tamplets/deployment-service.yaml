@@ -1,0 +1,35 @@
+# vue-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vue-app
+  labels:
+    app: vue-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: vue-app
+  template:
+    metadata:
+      labels:
+        app: vue-app
+    spec:
+      containers:
+        - name: vue-app
+          image: 992382591529.dkr.ecr.us-west-2.amazonaws.com/travel-front:latest
+          ports:
+            - containerPort: 9080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vue-app-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: vue-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9080
