@@ -58,7 +58,7 @@ export default {
       formData.append("twReviewRating", this.contentData.twReviewRating);
 
       axios
-        .post("/api1/reviewInsert", formData, {
+        .post(process.env.VUE_APP_BACK_URL + "/api1/reviewInsert", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -81,7 +81,7 @@ export default {
     ClassicEditor.create(document.querySelector("#editor"), {
       language: "ko",
       ckfinder: {
-        uploadUrl: "/api1/imgUpload",
+        uploadUrl: process.env.VUE_APP_BACK_URL + "/api1/imgUpload",
       },
     })
       .then((editor) => {

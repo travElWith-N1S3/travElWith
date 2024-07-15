@@ -53,6 +53,7 @@ export default {
         { type: "bot", text: "안녕하세요! 여행지 추천을 도와드릴게요." },
       ],
       websocket: null,
+      reconnectInterval: 5000, // 재연결 시도 간격 (밀리초)
     };
   },
   methods: {
@@ -84,6 +85,16 @@ export default {
       this.websocket = new WebSocket("ws://localhost:8080/ws/chat");
       this.websocket.onopen = () => {
         console.log("WebSocket 연결 성공");
+      };
+      this.websocket.onclose = () => {
+        console.log("WebSocket 연결 끊김, 재연결 시도...");
+        setTimeout(() => {
+          this.initWebSocket();
+        }, this.reconnectInterval);
+      };
+      this.websocket.onerror = (error) => {
+        console.error("WebSocket 오류:", error);
+        this.websocket.close();
       };
     },
 
@@ -136,13 +147,15 @@ export default {
     this.initWebSocket();
     this.getMessage();
     this.$axios.defaults.withCredentials = true;
-    this.$axios.get("http://localhost:8080/v1/chatbot").then((response) => {
-      if (response.data == 1) {
-        // alert("연결 성공");
-      } else {
-        alert("유효하지 않은 접근입니다. 채팅이 제한됩니다.");
-      }
-    });
+    this.$axios
+      .get(process.env.VUE_APP_BACK_URL + "/v1/chatbot")
+      .then((response) => {
+        if (response.data == 1) {
+          // alert("연결 성공");
+        } else {
+          alert("유효하지 않은 접근입니다. 채팅이 제한됩니다.");
+        }
+      });
   },
 };
 </script>

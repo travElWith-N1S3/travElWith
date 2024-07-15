@@ -91,8 +91,8 @@
 </template>
 
 <script>
-import axios from "axios"
-import ReviewItem from "./ReviewItem.vue"
+import axios from "axios";
+import ReviewItem from "./ReviewItem.vue";
 
 export default {
   components: {
@@ -105,60 +105,62 @@ export default {
       searchQuery: "",
       pageSize: 10,
       totalPage: 0,
-    }
+    };
   },
   methods: {
     fetchReviews() {
-      const page = this.currentPage - 1
-      const query = this.searchQuery
+      const page = this.currentPage - 1;
+      const query = this.searchQuery;
 
       axios
-        .get(`/api1/reviewSearch?query=${query}&page=${page}`)
+        .get(
+          `process.env.VUE_APP_BACK_URL/api1/reviewSearch?query=${query}&page=${page}`
+        )
         .then((response) => {
           if (response.data.status) {
-            this.reviews = response.data.reviews
-            this.totalPage = response.data.totalPages
+            this.reviews = response.data.reviews;
+            this.totalPage = response.data.totalPages;
           } else {
-            console.error("리뷰를 가져오는 중 오류 발생:", response.data.error)
+            console.error("리뷰를 가져오는 중 오류 발생:", response.data.error);
           }
         })
         .catch((error) => {
-          console.error("리뷰를 가져오는 중 오류가 발생했습니다!", error)
-        })
+          console.error("리뷰를 가져오는 중 오류가 발생했습니다!", error);
+        });
     },
     nextPage(event) {
-      event.preventDefault()
+      event.preventDefault();
       if (this.currentPage < this.totalPage) {
-        this.currentPage++
-        this.fetchReviews()
+        this.currentPage++;
+        this.fetchReviews();
       }
     },
     prevPage(event) {
-      event.preventDefault()
+      event.preventDefault();
       if (this.currentPage > 1) {
-        this.currentPage--
-        this.fetchReviews()
+        this.currentPage--;
+        this.fetchReviews();
       }
     },
     goToPage(page, event) {
-      event.preventDefault()
-      this.currentPage = page
-      this.fetchReviews()
+      event.preventDefault();
+      this.currentPage = page;
+      this.fetchReviews();
     },
   },
   created() {
-    this.currentPage = parseInt(this.$route.query.page) || 1
-    this.searchQuery = this.$route.query.query || ""
-    this.fetchReviews()
+    this.currentPage = parseInt(this.$route.query.page) || 1;
+    this.searchQuery = this.$route.query.query || "";
+    this.fetchReviews();
   },
   watch: {
     $route(to) {
-      this.currentPage = parseInt(to.query.page) || 1
-      this.searchQuery = to.query.query || ""
-      this.fetchReviews()
+      this.currentPage = parseInt(to.query.page) || 1;
+      this.searchQuery = to.query.query || "";
+      this.fetchReviews();
     },
   },
-}
+};
 </script>
 
 <style scoped>

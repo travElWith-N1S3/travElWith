@@ -77,7 +77,9 @@ export default {
   methods: {
     init() {
       this.$axios
-        .get("http://localhost:8080/v1/destination/info?id=" + this.id)
+        .get(
+          process.env.VUE_APP_BACK_URL + "/v1/destination/info?id=" + this.id
+        )
         .then((response) => {
           this.spot = response.data;
         });

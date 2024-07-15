@@ -51,7 +51,9 @@ export default {
   methods: {
     fetchReviewDetails(reviewId) {
       axios
-        .post("/api1/reviewView", { twReviewNo: reviewId })
+        .post(process.env.VUE_APP_BACK_URL + "/api1/reviewView", {
+          twReviewNo: reviewId,
+        })
         .then((response) => {
           const review = response.data.review;
           this.contentData.twReviewNo = String(review.twReviewNo);
@@ -83,7 +85,7 @@ export default {
       };
 
       axios
-        .post("/api1/reviewUpdate", data)
+        .post(process.env.VUE_APP_BACK_URL + "/api1/reviewUpdate", data)
         .then((response) => {
           if (response.data.status) {
             alert("리뷰가 성공적으로 수정되었습니다.");
