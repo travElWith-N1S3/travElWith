@@ -50,7 +50,9 @@ export default {
   methods: {
     fetchReviewDetail(twReviewNo) {
       axios
-        .post(process.env.VUE_APP_BACK_URL + "/api1/reviewView", { twReviewNo })
+        .post("http://" + process.env.VUE_APP_BACK_URL + "/api1/reviewView", {
+          twReviewNo,
+        })
         .then((response) => {
           if (response.data.status) {
             this.review = response.data.review;
@@ -65,7 +67,7 @@ export default {
     deleteReview() {
       const twReviewNo = this.$route.params.twReviewNo;
       axios
-        .post(process.env.VUE_APP_BACK_URL + "/api1/reviewDelete", {
+        .post("http://" + process.env.VUE_APP_BACK_URL + "/api1/reviewDelete", {
           twReviewNo,
         })
         .then((response) => {

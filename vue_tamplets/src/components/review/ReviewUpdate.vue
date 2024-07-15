@@ -51,7 +51,7 @@ export default {
   methods: {
     fetchReviewDetails(reviewId) {
       axios
-        .post(process.env.VUE_APP_BACK_URL + "/api1/reviewView", {
+        .post("http://" + process.env.VUE_APP_BACK_URL + "/api1/reviewView", {
           twReviewNo: reviewId,
         })
         .then((response) => {
@@ -85,7 +85,10 @@ export default {
       };
 
       axios
-        .post(process.env.VUE_APP_BACK_URL + "/api1/reviewUpdate", data)
+        .post(
+          "http://" + process.env.VUE_APP_BACK_URL + "/api1/reviewUpdate",
+          data
+        )
         .then((response) => {
           if (response.data.status) {
             alert("리뷰가 성공적으로 수정되었습니다.");

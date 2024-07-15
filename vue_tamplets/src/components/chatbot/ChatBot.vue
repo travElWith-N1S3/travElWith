@@ -150,7 +150,7 @@ export default {
     this.getMessage();
     this.$axios.defaults.withCredentials = true;
     this.$axios
-      .get(process.env.VUE_APP_BACK_URL + "/v1/chatbot")
+      .get("http://" + process.env.VUE_APP_BACK_URL + "/v1/chatbot")
       .then((response) => {
         if (response.data == 1) {
           // alert("연결 성공");

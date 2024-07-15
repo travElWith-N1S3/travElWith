@@ -44,7 +44,7 @@ export default {
     async fetchRecentReviews() {
       try {
         const response = await axios.get(
-          process.env.VUE_APP_BACK_URL + "/api1/recentReviews"
+          "http://" + process.env.VUE_APP_BACK_URL + "/api1/recentReviews"
         );
         if (response.data.status) {
           this.reviews = response.data.recentReviews;
