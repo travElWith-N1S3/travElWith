@@ -28,7 +28,6 @@ export default {
       this.$axios
         .get("http://localhost:8080/v1/popular-destination")
         .then((response) => {
-          console.log(response.data);
           this.spot = response.data;
         });
     },

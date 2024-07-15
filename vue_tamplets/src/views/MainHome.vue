@@ -18,10 +18,10 @@
 </template>
 
 <script>
-import SearchBar from "../components/common/SearchBar.vue"
-import PopularDestinations from "../components/home/PopularDestinations.vue"
-import RecommendedDestinations from "../components/home/RecommendedDestinations.vue"
-import Reviews from "../components/home/TourReviews.vue"
+import SearchBar from "../components/common/SearchBar.vue";
+import PopularDestinations from "../components/home/PopularDestinations.vue";
+import RecommendedDestinations from "../components/home/RecommendedDestinations.vue";
+import Reviews from "../components/home/TourReviews.vue";
 
 export default {
   name: "MainHome",
@@ -31,7 +31,7 @@ export default {
     RecommendedDestinations,
     Reviews,
   },
-}
+};
 </script>
 
 <style scoped>
