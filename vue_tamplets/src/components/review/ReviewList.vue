@@ -114,7 +114,7 @@ export default {
 
       axios
         .get(
-          `process.env.VUE_APP_BACK_URL/api1/reviewSearch?query=${query}&page=${page}`
+          `${process.env.VUE_APP_BACK_URL}/api1/reviewSearch?query=${query}&page=${page}`
         )
         .then((response) => {
           if (response.data.status) {

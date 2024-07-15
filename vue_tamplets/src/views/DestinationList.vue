@@ -26,7 +26,7 @@
             :to="
               currentPage > 1
                 ? {
-                    path: 'process.env.VUE_APP_BACK_URL/v1/destinationList',
+                    path: `${process.env.VUE_APP_BACK_URL}/v1/destinationList`,
                     query: { page: currentPage - 1 },
                   }
                 : ''
@@ -44,7 +44,7 @@
         <li class="page-item">
           <router-link
             :to="{
-              path: 'process.env.VUE_APP_BACK_URL/v1/destinationList',
+              path: `${process.env.VUE_APP_BACK_URL}/v1/destinationList`,
               query: { page: currentPage + 1 },
             }"
             class="page-link"
@@ -79,7 +79,7 @@ export default {
     getAllList() {
       this.$axios
         .get(
-          `process.env.VUE_APP_BACK_URL/v1/destinationList?page=${this.currentPage}` // API 호출 시 페이지 번호 조정
+          `${process.env.VUE_APP_BACK_URL}/v1/destinationList?page=${this.currentPage}` // API 호출 시 페이지 번호 조정
         )
         .then((response) => {
           this.destinations = response.data.content;

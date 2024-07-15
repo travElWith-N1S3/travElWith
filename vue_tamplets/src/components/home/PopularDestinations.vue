@@ -26,7 +26,7 @@ export default {
   methods: {
     getPopular() {
       this.$axios
-        .get(VUE_APP_BACK_URL + "/v1/popular-destination")
+        .get(process.env.VUE_APP_BACK_URL + "/v1/popular-destination")
         .then((response) => {
           this.spot = response.data;
         });
