@@ -5,11 +5,20 @@
         type="text"
         class="form-control form-control-lg mt-3"
         placeholder="검색할 여행지를 입력하세요..."
+        @click="navigateToChatbot"
       />
     </div>
   </div>
 </template>
-
+<script>
+export default {
+  methods: {
+    navigateToChatbot() {
+      this.$router.push("http://" + process.env.VUE_APP_BACK_URL + "/chatbot");
+    },
+  },
+};
+</script>
 <style scoped>
 .search-bar {
   margin-bottom: 30px;
