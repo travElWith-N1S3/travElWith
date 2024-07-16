@@ -26,9 +26,10 @@ export default {
   methods: {
     getPopular() {
       this.$axios
-        .get("http://localhost:8080/v1/popular-destination")
+        .get(
+          "http://" + process.env.VUE_APP_BACK_URL + "/v1/popular-destination"
+        )
         .then((response) => {
-          console.log(response.data);
           this.spot = response.data;
         });
     },

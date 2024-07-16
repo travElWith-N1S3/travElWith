@@ -58,11 +58,15 @@ export default {
       formData.append("twReviewRating", this.contentData.twReviewRating);
 
       axios
-        .post("/api1/reviewInsert", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
+        .post(
+          "http://" + process.env.VUE_APP_BACK_URL + "/api1/reviewInsert",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        )
         .then((response) => {
           if (response.data.status) {
             alert("리뷰가 성공적으로 등록되었습니다.");
@@ -81,7 +85,7 @@ export default {
     ClassicEditor.create(document.querySelector("#editor"), {
       language: "ko",
       ckfinder: {
-        uploadUrl: "/api1/imgUpload",
+        uploadUrl: "http://" + process.env.VUE_APP_BACK_URL + "/api1/imgUpload",
       },
     })
       .then((editor) => {

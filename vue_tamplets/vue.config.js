@@ -5,11 +5,11 @@ module.exports = defineConfig({
     port: 9080,
     proxy: {
       "/api1": {
-        target: "http://localhost:8080",
+        target: "http://" + process.env.VUE_APP_BACK_URL,
         changeOrigin: true,
       },
-      v1: {
-        target: "http://localhost:8080",
+      "/v1": {
+        target: "http://" + process.env.VUE_APP_BACK_URL,
         changeOrigin: true,
       },
     },

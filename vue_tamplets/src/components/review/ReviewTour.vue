@@ -6,7 +6,10 @@
       </router-link>
       <h1 class="review-title">{{ review.twReviewTitle }}</h1>
       <div>
-        <router-link :to="'/review/update/' + review.twReviewNo" class="btn btn-edit">
+        <router-link
+          :to="'/review/update/' + review.twReviewNo"
+          class="btn btn-edit"
+        >
           수정
         </router-link>
         <a href="#" class="btn btn-delete" @click="deleteReview">삭제</a>
@@ -47,7 +50,9 @@ export default {
   methods: {
     fetchReviewDetail(twReviewNo) {
       axios
-        .post("/api1/reviewView", { twReviewNo })
+        .post("http://" + process.env.VUE_APP_BACK_URL + "/api1/reviewView", {
+          twReviewNo,
+        })
         .then((response) => {
           if (response.data.status) {
             this.review = response.data.review;
@@ -62,7 +67,9 @@ export default {
     deleteReview() {
       const twReviewNo = this.$route.params.twReviewNo;
       axios
-        .post("/api1/reviewDelete", { twReviewNo })
+        .post("http://" + process.env.VUE_APP_BACK_URL + "/api1/reviewDelete", {
+          twReviewNo,
+        })
         .then((response) => {
           if (response.data.status) {
             alert("삭제되었습니다.");

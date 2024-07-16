@@ -23,10 +23,10 @@
 </template>
 
 <script>
-import "bootstrap/dist/css/bootstrap.min.css"
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic"
-import StarRating from "../review/StarRating.vue"
-import axios from "axios"
+import "bootstrap/dist/css/bootstrap.min.css";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import StarRating from "../review/StarRating.vue";
+import axios from "axios";
 
 export default {
   components: {
@@ -41,7 +41,7 @@ export default {
         twReviewRating: 0,
       },
       editorInstance: null,
-    }
+    };
   },
   methods: {
     updateReview() {
@@ -50,42 +50,45 @@ export default {
         !this.contentData.twReviewContent ||
         this.contentData.twReviewRating === null
       ) {
-        alert("모든 필드를 입력해주세요.")
-        return
+        alert("모든 필드를 입력해주세요.");
+        return;
       }
 
       const data = {
         ...this.contentData,
         twReviewRating: Number(this.contentData.twReviewRating),
-      }
+      };
 
       axios
-        .post("/api1/reviewUpdate", data)
+        .post(
+          "http://" + process.env.VUE_APP_BACK_URL + "/api1/reviewUpdate",
+          data
+        )
         .then((response) => {
-          console.log(response.data)
+          console.log(response.data);
           if (response.data.status) {
-            alert("리뷰가 성공적으로 수정되었습니다.")
-            this.$router.push("/reviews")
+            alert("리뷰가 성공적으로 수정되었습니다.");
+            this.$router.push("/reviews");
           } else {
-            alert("리뷰 수정에 실패했습니다.")
+            alert("리뷰 수정에 실패했습니다.");
           }
         })
         .catch((error) => {
-          console.error("리뷰 수정 중 오류 발생:", error)
-        })
+          console.error("리뷰 수정 중 오류 발생:", error);
+        });
     },
   },
   mounted() {
-    const reviewId = this.$route.params.twReviewNo
+    const reviewId = this.$route.params.twReviewNo;
 
     axios
       .post("/api1/reviewView", { twReviewNo: reviewId })
       .then((response) => {
-        const review = response.data.review
-        this.contentData.twReviewNo = String(review.twReviewNo)
-        this.contentData.twReviewTitle = review.twReviewTitle || ""
-        this.contentData.twReviewContent = review.twReviewContent || ""
-        this.contentData.twReviewRating = review.twReviewRating || 0
+        const review = response.data.review;
+        this.contentData.twReviewNo = String(review.twReviewNo);
+        this.contentData.twReviewTitle = review.twReviewTitle || "";
+        this.contentData.twReviewContent = review.twReviewContent || "";
+        this.contentData.twReviewRating = review.twReviewRating || 0;
 
         ClassicEditor.create(document.querySelector("#editor"), {
           language: "ko",
@@ -94,25 +97,25 @@ export default {
           },
         })
           .then((editor) => {
-            this.editorInstance = editor
+            this.editorInstance = editor;
 
             // CKEditor의 데이터 변경 이벤트를 핸들링합니다.
             editor.model.document.on("change:data", () => {
-              this.contentData.twReviewContent = editor.getData()
-            })
+              this.contentData.twReviewContent = editor.getData();
+            });
 
             // CKEditor가 초기화된 후 데이터를 설정합니다.
-            editor.setData(this.contentData.twReviewContent)
+            editor.setData(this.contentData.twReviewContent);
           })
           .catch((error) => {
-            console.error("에디터 초기화 중 오류 발생", error)
-          })
+            console.error("에디터 초기화 중 오류 발생", error);
+          });
       })
       .catch((error) => {
-        console.error("리뷰 정보를 가져오는 중 오류 발생:", error)
-      })
+        console.error("리뷰 정보를 가져오는 중 오류 발생:", error);
+      });
   },
-}
+};
 </script>
 
 <style scoped>

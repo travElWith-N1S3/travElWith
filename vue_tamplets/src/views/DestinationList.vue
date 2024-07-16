@@ -41,7 +41,10 @@
             {{ page }}
           </button>
         </li>
-        <li class="page-item" :class="{ disabled: currentEndPage >= totalPage }">
+        <li
+          class="page-item"
+          :class="{ disabled: currentEndPage >= totalPage }"
+        >
           <button
             class="page-link"
             @click.prevent="nextPage"
@@ -91,13 +94,16 @@ export default {
   methods: {
     getAllList() {
       axios
-        .get("http://localhost:8080/v1/destinationList", {
-          params: {
-            query: this.searchQuery,
-            page: this.currentPage - 1,
-            size: this.pageSize,
-          },
-        })
+        .get(
+          `http://${process.env.VUE_APP_BACK_URL}/v1/destinationList?page=${this.currentPage}`,
+          {
+            params: {
+              query: this.searchQuery,
+              page: this.currentPage - 1,
+              size: this.pageSize,
+            },
+          }
+        )
         .then((response) => {
           this.destinations = response.data.content;
           this.totalPage = response.data.totalPages;
