@@ -25,9 +25,13 @@ export default {
   },
   methods: {
     getPopular() {
-      this.$axios.get("/v1/popular-destination").then((response) => {
-        this.spot = response.data;
-      });
+      this.$axios
+        .get(
+          "http://" + process.env.VUE_APP_BACK_URL + "/v1/popular-destination"
+        )
+        .then((response) => {
+          this.spot = response.data;
+        });
     },
   },
   mounted() {

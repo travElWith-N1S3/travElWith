@@ -76,9 +76,16 @@ export default {
   },
   methods: {
     init() {
-      this.$axios.get("/v1/destination/info?id=" + this.id).then((response) => {
-        this.spot = response.data;
-      });
+      this.$axios
+        .get(
+          "http://" +
+            process.env.VUE_APP_BACK_URL +
+            "/v1/destination/info?id=" +
+            this.id
+        )
+        .then((response) => {
+          this.spot = response.data;
+        });
     },
   },
   mounted() {
