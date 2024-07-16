@@ -41,7 +41,7 @@ export default {
     getSpot3List() {
       this.$axios
         .get(
-          "http://" + process.env.VUE_APP_BACK_URL + "/v1/top-tour-spot" // API 호출 시 페이지 번호 조정
+          "/v1/top-tour-spot" // API 호출 시 페이지 번호 조정
         )
         .then((response) => {
           this.destinations = response.data;

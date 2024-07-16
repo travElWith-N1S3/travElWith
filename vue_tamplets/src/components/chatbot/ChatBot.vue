@@ -149,15 +149,13 @@ export default {
     this.initWebSocket();
     this.getMessage();
     this.$axios.defaults.withCredentials = true;
-    this.$axios
-      .get("http://" + process.env.VUE_APP_BACK_URL + "/v1/chatbot")
-      .then((response) => {
-        if (response.data == 1) {
-          // alert("연결 성공");
-        } else {
-          alert("유효하지 않은 접근입니다. 채팅이 제한됩니다.");
-        }
-      });
+    this.$axios.get("/v1/chatbot").then((response) => {
+      if (response.data == 1) {
+        // alert("연결 성공");
+      } else {
+        alert("유효하지 않은 접근입니다. 채팅이 제한됩니다.");
+      }
+    });
   },
 };
 </script>
