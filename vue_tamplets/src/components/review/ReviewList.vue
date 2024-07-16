@@ -78,8 +78,8 @@
 </template>
 
 <script>
-import axios from "axios";
-import ReviewItem from "./ReviewItem.vue";
+import axios from "axios"
+import ReviewItem from "./ReviewItem.vue"
 
 export default {
   components: {
@@ -94,19 +94,19 @@ export default {
       pageSize: 10,
       currentStartPage: 1,
       currentEndPage: 10,
-    };
+    }
   },
   computed: {
     displayedPages() {
-      let pages = [];
+      let pages = []
       for (
         let i = this.currentStartPage;
         i <= this.currentEndPage && i <= this.totalPage;
         i++
       ) {
-        pages.push(i);
+        pages.push(i)
       }
-      return pages;
+      return pages
     },
   },
   methods: {
@@ -115,7 +115,7 @@ export default {
         .get(
           `${
             "http://" + process.env.VUE_APP_BACK_URL
-          }/api1/reviewSearch?query=${query}&page=${page}`,
+          }/api1/reviewSearch`,
           {
             params: {
               query: this.searchQuery,
@@ -126,53 +126,53 @@ export default {
         )
         .then((response) => {
           if (response.data.status) {
-            this.reviews = response.data.reviews;
-            this.totalPage = response.data.totalPages;
+            this.reviews = response.data.reviews
+            this.totalPage = response.data.totalPages
           } else {
-            console.error("리뷰를 가져오는 중 오류 발생:", response.data.error);
+            console.error("리뷰를 가져오는 중 오류 발생:", response.data.error)
           }
         })
         .catch((error) => {
-          console.error("리뷰를 가져오는 중 오류가 발생했습니다!", error);
-        });
+          console.error("리뷰를 가져오는 중 오류가 발생했습니다!", error)
+        })
     },
     nextPageGroup() {
       if (this.currentEndPage < this.totalPage) {
-        this.currentStartPage += 10;
-        this.currentEndPage += 10;
-        this.currentPage = this.currentStartPage;
-        this.fetchReviews();
-        window.scrollTo(0, 0);
+        this.currentStartPage += 10
+        this.currentEndPage += 10
+        this.currentPage = this.currentStartPage
+        this.fetchReviews()
+        window.scrollTo(0, 0)
       }
     },
     prevPageGroup() {
       if (this.currentStartPage > 1) {
-        this.currentStartPage -= 10;
-        this.currentEndPage -= 10;
-        this.currentPage = this.currentStartPage;
-        this.fetchReviews();
-        window.scrollTo(0, 0);
+        this.currentStartPage -= 10
+        this.currentEndPage -= 10
+        this.currentPage = this.currentStartPage
+        this.fetchReviews()
+        window.scrollTo(0, 0)
       }
     },
     goToPage(page) {
-      this.currentPage = page;
-      this.fetchReviews();
-      window.scrollTo(0, 0);
+      this.currentPage = page
+      this.fetchReviews()
+      window.scrollTo(0, 0)
     },
   },
   created() {
-    this.currentPage = parseInt(this.$route.query.page) || 1;
-    this.searchQuery = this.$route.query.query || "";
-    this.fetchReviews();
+    this.currentPage = parseInt(this.$route.query.page) || 1
+    this.searchQuery = this.$route.query.query || ""
+    this.fetchReviews()
   },
   watch: {
     $route(to) {
-      this.currentPage = parseInt(to.query.page) || 1;
-      this.searchQuery = to.query.query || "";
-      this.fetchReviews();
+      this.currentPage = parseInt(to.query.page) || 1
+      this.searchQuery = to.query.query || ""
+      this.fetchReviews()
     },
   },
-};
+}
 </script>
 
 <style scoped>
