@@ -10,15 +10,20 @@
     >
       <div class="card mb-3">
         <div class="card-body">
-          <router-link
-            :to="{
-              name: 'ReviewTour',
-              params: { twReviewNo: review.twReviewNo },
-            }"
-          >
-            <h5 class="card-title">{{ review.twReviewTitle }}</h5>
-            <p class="card-text">{{ stripHtmlTags(review.twReviewContent) }}</p>
-          </router-link>
+          <h5 class="card-title">
+            {{ review.twReviewTitle }}
+            <template v-if="containsImages(review.twReviewContent)">
+              <img
+                  src="../common/image/사진아이콘.png"
+                  alt="new"
+                  class="photo-icon"
+              />
+            </template>
+          </h5>
+          <p
+            class="card-text"
+            v-html="sanitizeReviewContent(review.twReviewContent)"
+          ></p>
           <div class="more-link"></div>
         </div>
       </div>
@@ -27,43 +32,45 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "axios"
 
 export default {
   data() {
     return {
       reviews: [],
-    };
+    }
   },
   props: {
     twReviewNo: {
       type: String,
-      required: true, // 필수 속성
+      required: true,
     },
   },
   mounted() {
-    this.fetchRecentReviews();
+    this.fetchRecentReviews()
   },
   methods: {
     async fetchRecentReviews() {
       try {
-        const response = await axios.get(
-          "http://" + process.env.VUE_APP_BACK_URL + "/api1/recentReviews"
-        );
+        const response = await axios.get("/api1/recentReviews")
         if (response.data.status) {
-          this.reviews = response.data.recentReviews;
+          this.reviews = response.data.recentReviews
         } else {
-          console.error(response.data.error);
+          console.error(response.data.error)
         }
       } catch (error) {
-        console.error("Error fetching recent reviews:", error);
+        console.error("Error fetching recent reviews:", error)
       }
     },
-    stripHtmlTags(content) {
-      return content.replace(/<\/?p>/g, "");
+    containsImages(content) {
+      const imgTagRegex = /<figure class="image"><img.*?>/g
+      return imgTagRegex.test(content)
+    },
+    sanitizeReviewContent(content) {
+      return content.replace(/<figure class="image"><img.*?>/g, "")
     },
   },
-};
+}
 </script>
 
 <style scoped>
