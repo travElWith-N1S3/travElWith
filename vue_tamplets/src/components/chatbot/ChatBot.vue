@@ -89,15 +89,26 @@ export default {
         console.log("WebSocket 연결 성공");
       };
       this.websocket.onclose = () => {
-        console.log("WebSocket 연결 끊김, 재연결 시도...");
-        setTimeout(() => {
-          this.initWebSocket();
-        }, this.reconnectInterval);
+        if (this.websocket) {
+          // WebSocket 객체가 유효할 때만 재연결 시도
+          console.log("WebSocket 연결 끊김, 재연결 시도...");
+          setTimeout(() => {
+            this.initWebSocket();
+          }, this.reconnectInterval);
+        }
       };
       this.websocket.onerror = (error) => {
         console.error("WebSocket 오류:", error);
         this.websocket.close();
       };
+    },
+    closeWebSocket() {
+      if (this.websocket) {
+        this.websocket.onclose = null; // onclose 핸들러를 비활성화
+        this.websocket.close();
+        this.websocket = null;
+        console.log("WebSocket 연결 닫힘");
+      }
     },
 
     getCookie(name) {
@@ -156,6 +167,9 @@ export default {
         alert("유효하지 않은 접근입니다. 채팅이 제한됩니다.");
       }
     });
+  },
+  beforeUnmount() {
+    this.closeWebSocket();
   },
 };
 </script>
