@@ -1,7 +1,12 @@
 <template>
   <div class="review-item" v-if="twReviewNo">
-    <h4 class="review-title">{{ twReviewTitle }}</h4>
-    <div class="review-content" v-html="twReviewContent"></div>
+    <h4 class="review-title">
+      {{ twReviewTitle }}
+      <template v-if="containsImages(twReviewContent)">
+        <img src="../common/image/사진아이콘.png" alt="new" class="photo-icon">
+      </template>
+    </h4>
+    <div class="review-content" v-html="sanitizeReviewContent(twReviewContent)"></div>
     <div class="star-rating">
       <star-rating :modelValue="twReviewRating" @update:modelValue="updateRating"></star-rating>
     </div>
@@ -29,13 +34,21 @@ export default {
     twReviewContent: String,
     twReviewNo: {
       type: String,
-      required: true // 필수 속성
+      required: true
     },
     twReviewRating: Number,
   },
   methods: {
     updateRating(newRating) {
       this.$emit("update:twReviewRating", newRating);
+    },
+    containsImages(content) {
+      const imgTagRegex = /<figure class="image"><img.*?>/g;
+      return imgTagRegex.test(content);
+    },
+    sanitizeReviewContent(content) {
+      const sanitizedContent = content.replace(/<figure class="image"><img.*?>/g, '');
+      return sanitizedContent;
     },
   },
 };
@@ -57,6 +70,15 @@ export default {
 
 .review-title {
   color: #0056b3;
+  display: flex;
+  align-items: center;
+  margin-left: 290px;
+}
+
+.photo-icon {
+  height: 20px;
+  width: 20px;
+  margin-left: 10px;
 }
 
 .review-content {
@@ -73,5 +95,9 @@ export default {
   display: flex;
   justify-content: flex-start;
   align-items: flex-end;
+}
+
+.image-placeholder {
+  display: none;
 }
 </style>

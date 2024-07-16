@@ -3,15 +3,27 @@
     <router-link to="/reviews">
       <h2>리뷰글</h2>
     </router-link>
-    <router-link to="/review" v-for="review in reviews" :key="review.id">
+    <router-link
+      v-for="review in reviews"
+      :key="review.id"
+      :to="{ name: 'ReviewTour', params: { twReviewNo: review.twReviewNo } }"
+    >
       <div class="card mb-3">
         <div class="card-body">
-          <router-link
-            :to="{ name: 'ReviewTour', params: { twReviewNo: review.twReviewNo } }"
-          >
-            <h5 class="card-title">{{ review.twReviewTitle }}</h5>
-            <p class="card-text">{{ stripHtmlTags(review.twReviewContent) }}</p>
-          </router-link>
+          <h5 class="card-title">
+            {{ review.twReviewTitle }}
+            <template v-if="containsImages(review.twReviewContent)">
+              <img
+                  src="../common/image/사진아이콘.png"
+                  alt="new"
+                  class="photo-icon"
+              />
+            </template>
+          </h5>
+          <p
+            class="card-text"
+            v-html="sanitizeReviewContent(review.twReviewContent)"
+          ></p>
           <div class="more-link"></div>
         </div>
       </div>
@@ -31,7 +43,7 @@ export default {
   props: {
     twReviewNo: {
       type: String,
-      required: true // 필수 속성
+      required: true,
     },
   },
   mounted() {
@@ -50,8 +62,12 @@ export default {
         console.error("Error fetching recent reviews:", error)
       }
     },
-    stripHtmlTags(content) {
-      return content.replace(/<\/?p>/g, "")
+    containsImages(content) {
+      const imgTagRegex = /<figure class="image"><img.*?>/g
+      return imgTagRegex.test(content)
+    },
+    sanitizeReviewContent(content) {
+      return content.replace(/<figure class="image"><img.*?>/g, "")
     },
   },
 }
@@ -78,5 +94,12 @@ h2 {
 
 p {
   color: black;
+}
+
+.photo-icon {
+  height: 20px;
+  width: 20px;
+  margin-left: 5px;
+  margin-top: -5px;
 }
 </style>

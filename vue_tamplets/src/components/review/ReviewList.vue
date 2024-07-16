@@ -21,6 +21,7 @@
           </button>
         </div>
       </div>
+
       <ReviewItem
         v-for="review in reviews"
         :key="review.twReviewNo"
@@ -35,54 +36,40 @@
     <div class="d-flex justify-content-between align-items-center">
       <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center mb-0">
-          <li class="page-item" :class="{ disabled: currentPage === 1 }">
-            <router-link
-              :to="{
-                name: 'ReviewList',
-                query: { page: currentPage - 1, query: searchQuery },
-              }"
+          <li class="page-item" :class="{ disabled: currentStartPage === 1 }">
+            <button
               class="page-link"
-              :class="{ disabled: currentPage <= 1 }"
-              @click.prevent="prevPage"
+              @click.prevent="prevPageGroup"
+              :disabled="currentStartPage === 1"
             >
               이전
-            </router-link>
+            </button>
           </li>
           <li
-            class="page-item"
-            v-for="page in totalPage"
+            v-for="page in displayedPages"
             :key="page"
+            class="page-item"
             :class="{ active: currentPage === page }"
           >
-            <router-link
-              :to="{
-                name: 'ReviewList',
-                query: { page: page, query: searchQuery },
-              }"
-              class="page-link"
-              @click.prevent="goToPage(page, $event)"
-            >
+            <button class="page-link" @click.prevent="goToPage(page)">
               {{ page }}
-            </router-link>
+            </button>
           </li>
           <li
             class="page-item"
-            :class="{ disabled: currentPage === totalPage }"
+            :class="{ disabled: currentEndPage >= totalPage }"
           >
-            <router-link
-              :to="{
-                name: 'ReviewList',
-                query: { page: currentPage + 1, query: searchQuery },
-              }"
+            <button
               class="page-link"
-              :class="{ disabled: currentPage >= totalPage }"
-              @click.prevent="nextPage"
+              @click.prevent="nextPageGroup"
+              :disabled="currentEndPage >= totalPage"
             >
               다음
-            </router-link>
+            </button>
           </li>
         </ul>
       </nav>
+
       <router-link to="/reviewForm">
         <button class="btn btn-primary ml-3">리뷰 등록</button>
       </router-link>
@@ -103,17 +90,35 @@ export default {
       currentPage: 1,
       reviews: [],
       searchQuery: "",
-      pageSize: 10,
       totalPage: 0,
+      pageSize: 10,
+      currentStartPage: 1,
+      currentEndPage: 10,
     }
+  },
+  computed: {
+    displayedPages() {
+      let pages = []
+      for (
+        let i = this.currentStartPage;
+        i <= this.currentEndPage && i <= this.totalPage;
+        i++
+      ) {
+        pages.push(i)
+      }
+      return pages
+    },
   },
   methods: {
     fetchReviews() {
-      const page = this.currentPage - 1
-      const query = this.searchQuery
-
       axios
-        .get(`/api1/reviewSearch?query=${query}&page=${page}`)
+        .get(`/api1/reviewSearch`, {
+          params: {
+            query: this.searchQuery,
+            page: this.currentPage - 1,
+            size: this.pageSize,
+          },
+        })
         .then((response) => {
           if (response.data.status) {
             this.reviews = response.data.reviews
@@ -126,24 +131,28 @@ export default {
           console.error("리뷰를 가져오는 중 오류가 발생했습니다!", error)
         })
     },
-    nextPage(event) {
-      event.preventDefault()
-      if (this.currentPage < this.totalPage) {
-        this.currentPage++
+    nextPageGroup() {
+      if (this.currentEndPage < this.totalPage) {
+        this.currentStartPage += 10
+        this.currentEndPage += 10
+        this.currentPage = this.currentStartPage
         this.fetchReviews()
+        window.scrollTo(0, 0)
       }
     },
-    prevPage(event) {
-      event.preventDefault()
-      if (this.currentPage > 1) {
-        this.currentPage--
+    prevPageGroup() {
+      if (this.currentStartPage > 1) {
+        this.currentStartPage -= 10
+        this.currentEndPage -= 10
+        this.currentPage = this.currentStartPage
         this.fetchReviews()
+        window.scrollTo(0, 0)
       }
     },
-    goToPage(page, event) {
-      event.preventDefault()
+    goToPage(page) {
       this.currentPage = page
       this.fetchReviews()
+      window.scrollTo(0, 0)
     },
   },
   created() {

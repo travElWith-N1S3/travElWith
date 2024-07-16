@@ -8,6 +8,7 @@
           class="form-control form-control-lg"
           placeholder="검색할 여행지를 입력하세요..."
           v-model="searchQuery"
+          @input="searchDestinations"
         />
       </div>
       <div class="row">
@@ -21,38 +22,33 @@
     </div>
     <nav aria-label="Page navigation example">
       <ul class="pagination justify-content-center mb-0">
-        <li class="page-item" :class="{ disabled: currentPage === 1 }">
-          <router-link
-            :to="
-              currentPage > 1
-                ? {
-                    path: '/v1/destinationList',
-                    query: { page: currentPage - 1 },
-                  }
-                : ''
-            "
+        <li class="page-item" :class="{ disabled: currentStartPage === 1 }">
+          <button
             class="page-link"
-            :class="{ disabled: currentPage <= 1 }"
-            @click="prevPage"
+            @click.prevent="prevPage"
+            :disabled="currentStartPage === 1"
           >
             이전
-          </router-link>
+          </button>
         </li>
-        <li class="page-item active">
-          <a class="page-link" href="#">{{ currentPage }}</a>
+        <li
+          v-for="page in displayedPages"
+          :key="page"
+          class="page-item"
+          :class="{ active: currentPage === page }"
+        >
+          <button class="page-link" @click.prevent="goToPage(page)">
+            {{ page }}
+          </button>
         </li>
-        <li class="page-item">
-          <router-link
-            :to="{
-              path: '/v1/destinationList',
-              query: { page: currentPage + 1 },
-            }"
+        <li class="page-item" :class="{ disabled: currentEndPage >= totalPage }">
+          <button
             class="page-link"
-            :class="{ disabled: currentPage >= totalPage }"
-            @click="nextPage"
+            @click.prevent="nextPage"
+            :disabled="currentEndPage >= totalPage"
           >
             다음
-          </router-link>
+          </button>
         </li>
       </ul>
     </nav>
@@ -60,6 +56,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import DestinationCard from "../components/recommend/DestinationCard.vue";
 
 export default {
@@ -73,14 +70,34 @@ export default {
       searchQuery: "",
       destinations: [],
       pageSize: 10, // 페이지 당 목록 수
+      totalPage: 0,
+      currentStartPage: 1,
+      currentEndPage: 10,
     };
+  },
+  computed: {
+    displayedPages() {
+      let pages = [];
+      for (
+        let i = this.currentStartPage;
+        i <= this.currentEndPage && i <= this.totalPage;
+        i++
+      ) {
+        pages.push(i);
+      }
+      return pages;
+    },
   },
   methods: {
     getAllList() {
-      this.$axios
-        .get(
-          `http://localhost:8080/v1/destinationList?page=${this.currentPage}` // API 호출 시 페이지 번호 조정
-        )
+      axios
+        .get("http://localhost:8080/v1/destinationList", {
+          params: {
+            query: this.searchQuery,
+            page: this.currentPage - 1,
+            size: this.pageSize,
+          },
+        })
         .then((response) => {
           this.destinations = response.data.content;
           this.totalPage = response.data.totalPages;
@@ -90,26 +107,48 @@ export default {
         });
     },
     nextPage() {
-      this.$router.push({ query: { page: this.currentPage + 1 } });
+      if (this.currentPage < this.totalPage) {
+        this.currentStartPage += 10;
+        this.currentEndPage += 10;
+        this.currentPage = this.currentStartPage;
+        this.getAllList();
+        window.scrollTo(0, 0);
+      }
     },
     prevPage() {
-      this.$router.push({ query: { page: this.currentPage - 1 } });
+      if (this.currentPage > 1) {
+        this.currentStartPage -= 10;
+        this.currentEndPage -= 10;
+        this.currentPage = this.currentStartPage;
+        this.getAllList();
+        window.scrollTo(0, 0);
+      }
     },
-  },
-  watch: {
-    // $route 객체의 변경을 감지하여 데이터를 새로 불러옴
-    $route(to) {
-      this.currentPage = parseInt(to.query.page) || 1;
+    goToPage(page) {
+      this.currentPage = page;
+      this.getAllList();
+      window.scrollTo(0, 0);
+    },
+    searchDestinations() {
+      this.currentPage = 1;
       this.getAllList();
     },
   },
-  mounted() {
-    // 마운트 시 현재 페이지 설정
+  created() {
     this.currentPage = parseInt(this.$route.query.page) || 1;
+    this.searchQuery = this.$route.query.query || "";
     this.getAllList();
+  },
+  watch: {
+    $route(to) {
+      this.currentPage = parseInt(to.query.page) || 1;
+      this.searchQuery = to.query.query || "";
+      this.getAllList();
+    },
   },
 };
 </script>
+
 <style scoped>
 .row {
   padding: 10px;
