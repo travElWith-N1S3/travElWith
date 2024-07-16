@@ -59,12 +59,11 @@ export default {
   methods: {
     getMessage() {
       this.websocket.onmessage = (event) => {
-        console.log(JSON.parse(event.data));
         this.receiveMsg(event);
       };
     },
     receiveMsg(msg) {
-      var messageInfo = JSON.parse(msg.data);
+      var messageInfo = msg.data;
       this.chatHistory.push({ type: "bot", text: messageInfo });
     },
     sendMessage2() {
