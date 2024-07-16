@@ -14,7 +14,7 @@
 export default {
   methods: {
     navigateToChatbot() {
-      this.$router.push("http://" + process.env.VUE_APP_BACK_URL + "/chatbot");
+      this.$router.push("/chatbot");
     },
   },
 };
