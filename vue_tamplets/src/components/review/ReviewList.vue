@@ -112,7 +112,7 @@ export default {
   methods: {
     fetchReviews() {
       axios
-        .get(`${"http://" + process.env.VUE_APP_BACK_URL}/api1/reviewSearch`, {
+        .get(`/api1/reviewSearch`, {
           params: {
             query: this.searchQuery,
             page: this.currentPage - 1,

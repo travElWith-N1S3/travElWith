@@ -60,10 +60,7 @@ export default {
       };
 
       axios
-        .post(
-          "http://" + process.env.VUE_APP_BACK_URL + "/api1/reviewUpdate",
-          data
-        )
+        .post("/api1/reviewUpdate", data)
         .then((response) => {
           console.log(response.data);
           if (response.data.status) {

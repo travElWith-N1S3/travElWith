@@ -58,15 +58,11 @@ export default {
       formData.append("twReviewRating", this.contentData.twReviewRating);
 
       axios
-        .post(
-          "http://" + process.env.VUE_APP_BACK_URL + "/api1/reviewInsert",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        )
+        .post("/api1/reviewInsert", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then((response) => {
           if (response.data.status) {
             alert("리뷰가 성공적으로 등록되었습니다.");
