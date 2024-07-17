@@ -94,16 +94,13 @@ export default {
   methods: {
     getAllList() {
       axios
-        .get(
-          `http://${process.env.VUE_APP_BACK_URL}/v1/destinationList?page=${this.currentPage}`,
-          {
-            params: {
-              query: this.searchQuery,
-              page: this.currentPage - 1,
-              size: this.pageSize,
-            },
-          }
-        )
+        .get(`/v1/destinationList?page=${this.currentPage}`, {
+          params: {
+            query: this.searchQuery,
+            page: this.currentPage - 1,
+            size: this.pageSize,
+          },
+        })
         .then((response) => {
           this.destinations = response.data.content;
           this.totalPage = response.data.totalPages;

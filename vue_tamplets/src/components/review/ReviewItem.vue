@@ -3,12 +3,22 @@
     <h4 class="review-title">
       {{ twReviewTitle }}
       <template v-if="containsImages(twReviewContent)">
-        <img src="../common/image/사진아이콘.png" alt="new" class="photo-icon">
+        <img
+          src="../common/image/사진아이콘.png"
+          alt="new"
+          class="photo-icon"
+        />
       </template>
     </h4>
-    <div class="review-content" v-html="sanitizeReviewContent(twReviewContent)"></div>
+    <div
+      class="review-content"
+      v-html="sanitizeReviewContent(twReviewContent)"
+    ></div>
     <div class="star-rating">
-      <star-rating :modelValue="twReviewRating" @update:modelValue="updateRating"></star-rating>
+      <star-rating
+        :modelValue="twReviewRating"
+        @update:modelValue="updateRating"
+      ></star-rating>
     </div>
     <div class="review-actions">
       <router-link
@@ -19,9 +29,7 @@
       </router-link>
     </div>
   </div>
-  <div v-else>
-    Loading...
-  </div>
+  <div v-else>Loading...</div>
 </template>
 
 <script>
@@ -34,7 +42,7 @@ export default {
     twReviewContent: String,
     twReviewNo: {
       type: String,
-      required: true
+      required: true,
     },
     twReviewRating: Number,
   },
@@ -47,7 +55,10 @@ export default {
       return imgTagRegex.test(content);
     },
     sanitizeReviewContent(content) {
-      const sanitizedContent = content.replace(/<figure class="image"><img.*?>/g, '');
+      const sanitizedContent = content.replace(
+        /<figure class="image"><img.*?>/g,
+        ""
+      );
       return sanitizedContent;
     },
   },
