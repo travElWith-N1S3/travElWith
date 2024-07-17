@@ -4,7 +4,8 @@ module.exports = defineConfig({
   devServer: {
     port: 9080,
     client: {
-      webSocketURL: "ws://35.162.83.137:8080/ws/chat",
+      // webSocketURL: "ws://35.162.83.137:8080/ws/chat",
+      WebSocketURL: "ws://back.service-connect:8080/ws/chat",
     },
     proxy: {
       "/api1": {
