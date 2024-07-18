@@ -85,6 +85,7 @@ export default {
         "ws://" + process.env.VUE_APP_BACK_URL + "/ws/chat"
       );
       this.websocket.onopen = () => {
+        console.log("ws://" + process.env.VUE_APP_BACK_URL + "/ws/chat");
         console.log("WebSocket 연결 성공");
       };
       this.websocket.onclose = () => {
