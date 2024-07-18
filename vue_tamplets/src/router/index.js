@@ -15,10 +15,10 @@ const routes = [
     component: MainHome,
   },
   {
-    path: '/review/:twReviewNo',
-    name: 'ReviewTour',
+    path: "/review/:twReviewNo",
+    name: "ReviewTour",
     component: ReviewTour,
-    props: true
+    props: true,
   },
   {
     path: "/reviews",
@@ -30,7 +30,7 @@ const routes = [
     path: "/review/update/:twReviewNo",
     name: "ReviewUpdate",
     component: ReviewUpdate,
-    props: true
+    props: true,
   },
   {
     path: "/destinationList",
