@@ -59,7 +59,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import DestinationCard from "../components/recommend/DestinationCard.vue";
 
 export default {
@@ -93,7 +92,7 @@ export default {
   },
   methods: {
     getAllList() {
-      axios
+      this.$axios
         .get(`/v1/destinationList?page=${this.currentPage}`, {
           params: {
             query: this.searchQuery,

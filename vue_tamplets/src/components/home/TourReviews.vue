@@ -32,8 +32,6 @@
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
   data() {
     return {
@@ -52,7 +50,7 @@ export default {
   methods: {
     async fetchRecentReviews() {
       try {
-        const response = await axios.get("/api1/recentReviews");
+        const response = await this.$axios.get("/api1/recentReviews");
         if (response.data.status) {
           this.reviews = response.data.recentReviews;
         } else {

@@ -30,7 +30,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import StarRating from "../review/StarRating.vue";
 
 export default {
@@ -49,7 +48,7 @@ export default {
   },
   methods: {
     fetchReviewDetail(twReviewNo) {
-      axios
+      this.$axios
         .post("/api1/reviewView", {
           twReviewNo,
         })
@@ -66,7 +65,7 @@ export default {
     },
     deleteReview() {
       const twReviewNo = this.$route.params.twReviewNo;
-      axios
+      this.$axios
         .post("/api1/reviewDelete", {
           twReviewNo,
         })

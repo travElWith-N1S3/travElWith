@@ -78,7 +78,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import ReviewItem from "./ReviewItem.vue";
 
 export default {
@@ -111,7 +110,7 @@ export default {
   },
   methods: {
     fetchReviews() {
-      axios
+      this.$axios
         .get(`/api1/reviewSearch`, {
           params: {
             query: this.searchQuery,

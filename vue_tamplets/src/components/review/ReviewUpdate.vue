@@ -26,7 +26,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import StarRating from "../review/StarRating.vue";
-import axios from "axios";
 
 export default {
   components: {
@@ -59,7 +58,7 @@ export default {
         twReviewRating: Number(this.contentData.twReviewRating),
       };
 
-      axios
+      this.$axios
         .post("/api1/reviewUpdate", data)
         .then((response) => {
           console.log(response.data);
@@ -78,7 +77,7 @@ export default {
   mounted() {
     const reviewId = this.$route.params.twReviewNo;
 
-    axios
+    this.$axios
       .post("/api1/reviewView", { twReviewNo: reviewId })
       .then((response) => {
         const review = response.data.review;

@@ -35,7 +35,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import StarRating from "../review/StarRating.vue";
-import axios from "axios";
 
 export default {
   components: {
@@ -57,7 +56,7 @@ export default {
       formData.append("twReviewContent", this.contentData.twReviewContent);
       formData.append("twReviewRating", this.contentData.twReviewRating);
 
-      axios
+      this.$axios
         .post("/api1/reviewInsert", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
