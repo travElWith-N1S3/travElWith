@@ -82,7 +82,7 @@ export default {
 
     initWebSocket() {
       this.websocket = new WebSocket(
-        "ws://" + process.env.VUE_APP_BACK_URL + "/ws/chat"
+        "ws://" + process.env.VUE_APP_SOCKET_URL + "/ws/chat"
       );
       this.websocket.onopen = () => {
         console.log("ws://" + process.env.VUE_APP_BACK_URL + "/ws/chat");
