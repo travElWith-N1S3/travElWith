@@ -2,7 +2,7 @@
   <div class="container">
     <div>
       <img
-        src="https://via.placeholder.com/1500x300"
+        src="../components/common/image/travElWith_Banner.png"
         class="img-fluid"
         alt="Header Image"
         style="width: 100%; height: 300px; object-fit: cover"

@@ -1,6 +1,6 @@
 <template>
   <router-link to="/">
-    <div class="site-name">Travel Destination Recommendation</div>
+    <div class="site-name">travElWith</div>
   </router-link>
 </template>
 
